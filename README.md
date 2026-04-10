@@ -1,7 +1,7 @@
 # Sistema de Generación Óptima de Horarios Académicos (MERN Stack)
 
 ## 👥 Integrantes y Roles (Scrum)
-* **Scrum Master:** [Gabriel Landa Sabuco] - Facilitador y gestión de bloqueos.
+* **Scrum Master:** [David gabriel Landa Sabuco] - Facilitador y gestión de bloqueos.
 * **Product Owner:** [Piero Curassi Montano] - Gestión del Backlog y visión del cliente.
 * **Fullstack Developer:** [Rolfi Escobar Rojas] - Implementación de lógica de optimización.
 * **Frontend & UX:** [Rojas Ortiz Franklin, Camarena Chavez Anthony] - Diseño de interfaz reactiva y flujos de usuario.
