@@ -1,1 +1,17 @@
+SPRINT 0: INICIO DEL PROYECTO
+Sistema Inteligente de Generación Óptima de Horarios Académicos
+Documento Inicial del Problema (Primer Borrador)
+La planificación de horarios académicos en universidades con currículo flexible representa un desafío significativo debido a la interacción de múltiples variables y restricciones que deben ser consideradas simultáneamente.
+En muchos casos, este proceso se realiza de manera manual o mediante herramientas poco especializadas, lo que genera diversas problemáticas:
+●	Conflictos de horarios entre cursos obligatorios.
+●	Baja utilización de aulas y recursos institucionales.
+●	Dificultades para que los estudiantes organicen adecuadamente su carga académica.
+●	Ineficiencia en la asignación de docentes.
+Además, el problema se ve agravado por:
+●	Cambios constantes en la matrícula estudiantil.
+●	Diversidad de preferencias y disponibilidades.
+●	Dependencias académicas entre cursos (prerrequisitos).
+●	Necesidad de generar soluciones en tiempos limitados.
+Debido a estas características, el problema no cuenta con una solución única ni trivial, requiriendo un enfoque basado en modelado formal y técnicas de optimización.
+En este contexto, surge la necesidad de desarrollar un sistema inteligente que permita automatizar y optimizar la generación de horarios académicos, mejorando la eficiencia operativa y la calidad del servicio educativo.
 
