@@ -18,4 +18,4 @@ Las universidades con currículo flexible enfrentan una explosión combinatoria 
 El sistema sigue un modelo **SPA (Single Page Application)** que consume una **API REST**. La lógica de optimización está aislada en un servicio del backend para permitir escalabilidad horizontal.
 
 ## 📂 Documentación
-Toda la gestión del proyecto bajo el marco PMBOK y Scrum se encuentra en la carpeta [TP2-main/docs](.TP2-main/docs)
+Toda la gestión del proyecto bajo el marco PMBOK y Scrum se encuentra en la carpeta [PFA-TallerProyectos2/TP2-main/docs](.PFA-TallerProyectos2/TP2-main/docs)
