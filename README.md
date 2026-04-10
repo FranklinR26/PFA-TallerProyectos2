@@ -14,7 +14,7 @@ Las universidades con currículo flexible enfrentan una explosión combinatoria 
 - **Express & Node.js:** Manejo eficiente de peticiones asíncronas durante el proceso de cálculo intensivo.
 - **React:** Interfaz dinámica para la visualización de horarios sin recargas de página.
 
-## 🛠️ Arquitectura
+## 🛠️ ARQUITECTURA
 El sistema sigue un modelo **SPA (Single Page Application)** que consume una **API REST**. La lógica de optimización está aislada en un servicio del backend para permitir escalabilidad horizontal.
 
 ## 📂 Documentación
