@@ -151,10 +151,7 @@ Se adopta Scrum debido a:
 
 ## 11. Documentación
 
-Toda la gestión del proyecto bajo el marco **PMBOK** y **Scrum** se encuentra en la carpeta:
-
-```
-/docs
+Toda la gestión del proyecto bajo el marco **PMBOK** y **Scrum** se encuentra en la carpeta: /docs
 ```
 
 ---
