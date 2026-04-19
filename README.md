@@ -190,7 +190,7 @@ Se adopta Scrum debido a:
 
 La documentación del proyecto se encuentra en:
 
-📂 `/docs`(./TP2-main/docs)
+📂 📂 [Documentacion](./TP2-main/docs)
 
 Incluye:
 - Plan del proyecto  
