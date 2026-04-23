@@ -57,6 +57,36 @@ El problema presenta alta complejidad debido a:
 **Justificación técnica:**  
 Debido a la naturaleza combinatoria del problema (NP-completo), se selecciona un modelo CSP que permite representar formalmente variables, dominios y restricciones, optimizando la búsqueda de soluciones factibles en tiempos razonables.
 
+## Modelado Formal (CSP)
+
+## Variables
+ 
+```
+X = {x₁, x₂, ..., xₙ}  donde cada xᵢ representa un curso
+```
+ 
+## Dominios
+ 
+```
+D(xᵢ) = {día, hora, aula}
+```
+ 
+## Restricciones Duras 
+ 
+* Un docente no puede estar en dos cursos simultáneamente
+* Un aula no puede tener más de un curso al mismo tiempo
+* Se deben cumplir todas las horas asignadas por curso
+* Capacidad del aula ≥ estudiantes
+## Restricciones Suaves 
+ 
+* Minimizar huecos en horarios
+* Preferencias de docentes
+* Evitar horarios extremos
+## Función Objetivo
+ 
+```
+Minimizar: f = Σ penalizaciones (huecos + incumplimientos suaves)
+```
 ---
 
 ## 4. Stakeholders
@@ -144,10 +174,187 @@ El motor CSP se encuentra desacoplado en el backend para mejorar escalabilidad y
 
 ### Decisión
 Se selecciona CSP debido a su capacidad para modelar múltiples restricciones simultáneamente y resolver problemas combinatorios de forma eficiente.
-
+## Implementación con TDD
+ 
+## Estrategia
+ 
+Se aplica el ciclo iterativo:
+ 
+```
+RED → GREEN → REFACTOR
+```
+ 
+1. **RED**: Escribir el test antes de implementar la funcionalidad (falla intencionalmente).
+2. **GREEN**: Implementar el mínimo código necesario para que el test pase.
+3. **REFACTOR**: Mejorar el código sin romper los tests existentes.
+## Ubicación de los Tests
+ 
+```
+TP2-main/
+└── Otros/
+    └── tests/
+        ├── generarHorario.test.js
+        ├── validarConflictos.test.js
+        └── restricciones.test.js
+```
+ 
+## Ejecutar Tests
+ 
+```bash
+cd TP2-main/Otros
+npm test
+```
+ 
+Para ver cobertura:
+ 
+```bash
+npm test -- --coverage
+```
+ 
+## Casos de Test (Jest)
+ 
+### Caso 1: Generación sin conflictos de docente
+ 
+```javascript
+const { generarHorario } = require('../src/csp/generarHorario');
+const { validarConflictosDocente } = require('../src/csp/validaciones');
+ 
+test("no hay conflictos de docente en el horario generado", () => {
+  const data = {
+    cursos: [
+      { id: "C1", docente: "D1", horas: 2 },
+      { id: "C2", docente: "D1", horas: 2 },
+    ],
+    aulas: ["A1", "A2"],
+    slots: ["LUN-8:00", "LUN-10:00", "MAR-8:00"]
+  };
+  const horario = generarHorario(data);
+  expect(validarConflictosDocente(horario)).toBe(true);
+});
+```
+ 
+### Caso 2: Generación sin conflictos de aula
+ 
+```javascript
+test("no hay conflictos de aula en el horario generado", () => {
+  const data = {
+    cursos: [
+      { id: "C1", docente: "D1", horas: 1 },
+      { id: "C2", docente: "D2", horas: 1 },
+    ],
+    aulas: ["A1"],
+    slots: ["LUN-8:00", "LUN-10:00"]
+  };
+  const horario = generarHorario(data);
+  expect(validarConflictosAula(horario)).toBe(true);
+});
+```
+ 
+### Caso 3: Backtracking cuando no hay slots disponibles
+ 
+```javascript
+test("retorna null si no existe solución válida", () => {
+  const dataImposible = {
+    cursos: [
+      { id: "C1", docente: "D1", horas: 3 },
+      { id: "C2", docente: "D1", horas: 3 },
+    ],
+    aulas: ["A1"],
+    slots: ["LUN-8:00"] // Solo 1 slot para 2 cursos del mismo docente
+  };
+  const horario = generarHorario(dataImposible);
+  expect(horario).toBeNull();
+});
+```
+ 
+### Caso 4: Todas las horas requeridas son asignadas
+ 
+```javascript
+test("todos los cursos tienen sus horas asignadas", () => {
+  const data = { /* dataset válido */ };
+  const horario = generarHorario(data);
+  data.cursos.forEach(curso => {
+    const horasAsignadas = horario.filter(h => h.cursoId === curso.id).length;
+    expect(horasAsignadas).toBe(curso.horas);
+  });
+});
+```
+ 
+## Cobertura
+ 
+* Cobertura objetivo ≥ 70%
+* Módulos críticos (CSP, validaciones): ≥ 90%
+ 
+---
+ 
+# 10. Instalación y Ejecución
+ 
+## Prerrequisitos
+ 
+* Node.js ≥ 18
+* MongoDB (local o Atlas)
+* Git
+## 1. Clonar el repositorio
+ 
+```bash
+git clone https://github.com/FranklinR26/PFA-TallerProyectos2.git
+cd PFA-TallerProyectos2/TP2-main
+```
+ 
+## 2. Configurar variables de entorno
+ 
+Crear el archivo `.env` dentro de `server/`:
+ 
+```bash
+cp server/.env.example server/.env
+```
+ 
+Editar `server/.env` con tus valores:
+ 
+```env
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/horarios_db
+```
+ 
+> Si usas MongoDB Atlas, reemplaza `MONGODB_URI` con tu connection string.
+ 
+## 3. Instalar y ejecutar el Backend
+ 
+```bash
+cd server
+npm install
+npm run dev
+```
+ 
+El servidor estará disponible en: `http://localhost:5000`
+ 
+## 4. Instalar y ejecutar el Frontend
+ 
+En otra terminal:
+ 
+```bash
+cd ../client
+npm install
+npm run dev
+```
+ 
+La aplicación estará disponible en: `http://localhost:5173`
+ 
+## 5. Ejecutar los Tests
+ 
+```bash
+cd server
+npm test
+```
+ 
+Para ver el reporte de cobertura:
+ 
+```bash
+npm test -- --coverage
+```
 ---
 
-## 10. Metodología
+## 11. Metodología
 
 Se adopta Scrum debido a:
 
@@ -158,7 +365,7 @@ Se adopta Scrum debido a:
 
 ---
 
-## 11. Stack Tecnológico
+## 12. Stack Tecnológico
 
 - MongoDB → almacenamiento de datos  
 - Express.js → backend y API REST  
@@ -167,7 +374,7 @@ Se adopta Scrum debido a:
 
 ---
 
-## 12. Equipo
+## 13. Equipo
 
 ### Roles Scrum
 
@@ -186,7 +393,7 @@ Se adopta Scrum debido a:
 
 ---
 
-## 13. Documentación
+## 14. Documentación
 
 La documentación del proyecto se encuentra en:
 
