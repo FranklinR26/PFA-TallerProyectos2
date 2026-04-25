@@ -1,0 +1,5 @@
+export const PERF = {
+  SCHEDULE_GENERATION_MS: 2000,
+  API_RESPONSE_MS:         500,
+  METRICS_CACHE_TTL_MS:  60_000,
+};
