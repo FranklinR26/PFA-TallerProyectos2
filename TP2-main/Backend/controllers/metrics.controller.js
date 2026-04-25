@@ -1,8 +1,9 @@
-import { Schedule }      from '../models/Schedule.js';
-import { Course }        from '../models/Course.js';
-import { Classroom }     from '../models/Classroom.js';
-import { Student }       from '../models/Student.js';
+import { Schedule }       from '../models/Schedule.js';
+import { Course }         from '../models/Course.js';
+import { Classroom }      from '../models/Classroom.js';
+import { Student }        from '../models/Student.js';
 import { computeMetrics } from '../csp/metrics.js';
+import { logger }         from '../config/logger.js';
 
 export const getMetrics = async (req, res) => {
   try {
@@ -22,8 +23,10 @@ export const getMetrics = async (req, res) => {
       : schedule.solution;
 
     const metrics = computeMetrics({ solution, courses, classrooms, students });
+    logger.info('metrics_computed', { scheduleId: schedule._id, coveragePct: metrics.coveragePct });
     res.json({ ...metrics, scheduleId: schedule._id, score: schedule.score });
   } catch (err) {
+    logger.error('metrics_error', { message: err.message });
     res.status(500).json({ message: err.message });
   }
 };
