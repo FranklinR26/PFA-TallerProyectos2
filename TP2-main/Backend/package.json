@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
-    "seed": "node scripts/seedAll.js"
+    "seed": "node scripts/seedAll.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +26,8 @@
     "mongoose": "^9.5.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "vitest": "^2.1.8",
+    "@vitest/coverage-v8": "^2.1.8"
   }
 }

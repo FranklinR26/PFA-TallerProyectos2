@@ -6,6 +6,9 @@ import { Classroom }   from '../models/Classroom.js';
 import { Student }     from '../models/Student.js';
 import { Schedule }    from '../models/Schedule.js';
 import { Period }      from '../models/Period.js';
+import { logger }          from '../config/logger.js';
+import { PERF }            from '../config/performance.js';
+import { invalidateCache } from '../middleware/cache.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -42,11 +45,18 @@ export const generate = async (req, res) => {
     const result = await runSolverAsync({ courses, classrooms, students, weights, params });
 
     if (!result.ok) {
+      logger.warn('schedule_generation_failed', { reason: result.reason, nodes: result.nodes, timeMs: result.timeMs });
       return res.status(422).json({
         message: result.reason,
         nodes:   result.nodes,
         timeMs:  result.timeMs,
       });
+    }
+
+    if (result.timeMs > PERF.SCHEDULE_GENERATION_MS) {
+      logger.warn('schedule_generation_slow', { timeMs: result.timeMs, threshold: PERF.SCHEDULE_GENERATION_MS });
+    } else {
+      logger.info('schedule_generation_ok', { score: result.score, nodes: result.nodes, timeMs: result.timeMs });
     }
 
     const activePeriod = await Period.findOne({ isActive: true });
@@ -62,15 +72,18 @@ export const generate = async (req, res) => {
       period:   activePeriod?._id ?? null,
     });
 
+    invalidateCache('/metrics');
+
     res.status(201).json({
       scheduleId: schedule._id,
       score:      result.score,
       nodes:      result.nodes,
       timeMs:     result.timeMs,
       assignment: result.assignment,
+      withinTarget: result.timeMs <= PERF.SCHEDULE_GENERATION_MS,
     });
   } catch (err) {
-    console.error(err);
+    logger.error('schedule_generation_error', { message: err.message });
     res.status(500).json({ message: err.message });
   }
 };
