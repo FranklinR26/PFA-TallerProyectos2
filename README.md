@@ -20,8 +20,6 @@
 - [11. Stack Tecnológico](#11-stack-tecnológico)
 - [12. Equipo](#12-equipo)
 - [13. Documentación](#13-documentación)
-- [Contributing](#-contributing)
-- [Troubleshooting](#-troubleshooting)
 
 ---
 
@@ -395,13 +393,13 @@ cd PFA-TallerProyectos2/TP2-main
  
 ## 2. Configurar variables de entorno
  
-Crear el archivo `.env` dentro de `server/`:
+Crear el archivo `.env` dentro de `Backend/`:
  
 ```bash
-cp server/.env.example server/.env
+cp Backend/.env.example server/.env
 ```
  
-Editar `server/.env` con tus valores:
+Editar `Backend/.env` con tus valores:
  
 ```env
 PORT=5000
@@ -496,7 +494,7 @@ Incluye:
 - Evidencias de sprints  
 - Documentos de gestión  
 
-### Documentos Complementarios (Consigna Académica)
+### Documentos Complementarios
 
 | Documento | Descripción | Link |
 |-----------|------------|------|
@@ -530,51 +528,6 @@ Incluye:
 
 ---
 
-## 📝 Contributing
-
-### Git Flow Strategy
-
-```
-main (producción)
-  ↑
-release/v1.0.0
-  ↑
-develop (integración)
-  ↑
-feature/HU-05-motor-csp
-```
-
-### Commits Semánticos
-
-```bash
-git commit -m "feat(csp): Implementar Motor CSP con HC-1 a HC-7"
-git commit -m "test(csp): Agregar 25 test cases para validación"
-git commit -m "fix(solver): Corregir timeout en OR-Tools"
-git commit -m "docs(readme): Actualizar API documentation"
-```
-
-### PR Checklist
-
-- [ ] Tests pasan (npm test)
-- [ ] Coverage ≥ 70%
-- [ ] Commit semántico
-- [ ] 1+ revisor aprobó
-- [ ] Documentación actualizada
-
----
-
-## 🆘 Troubleshooting
-
-**P: Error `MONGODB_URI not found`**  
-R: Crear `.env` en `server/` con: `MONGODB_URI=mongodb://localhost:27017/horarios_db`
-
-**P: Solver timeout después de 5 segundos**  
-R: Reducir cantidad de cursos (debug: `console.log(variables.length)`) o aumentar `num_workers` en config CSP
-
-**P: Tests fallan con `Cannot find module 'or-tools'`**  
-R: `cd server && npm install @google-cloud/or-tools`
-
----
 
 ## 📧 Contacto & Licencia
 
