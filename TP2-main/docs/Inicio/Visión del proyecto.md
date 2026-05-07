@@ -12,4 +12,4 @@ Se busca transformar el proceso tradicional de planificación académica, el cua
 
 A largo plazo, el sistema podrá adaptarse a diferentes contextos institucionales y escalar para soportar mayores volúmenes de información, integrándose con otros sistemas académicos existentes.
 
-<a name="_heading=h.tzl4xp35lh16"></a>**Enlace a repositorio:** 
+<a name="_heading=h.tzl4xp35lh16"></a>**Enlace a repositorio:** https://github.com/GaboLand/PFA-TallerProyectos2

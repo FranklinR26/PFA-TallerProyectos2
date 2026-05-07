@@ -1,6 +1,12 @@
 # 📌 Sistema de Generación Óptima de Horarios Académicos (MERN Stack)
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](npm%20test) [![Coverage](https://img.shields.io/badge/coverage-87%25-green.svg)](#testing) [![Status](https://img.shields.io/badge/status-v1.0.0-blue.svg)](#)
+
 ## 📑 Tabla de Contenidos
+- [Quick Start](#-quick-start) ⭐
+- [Arquitectura Visual](#-arquitectura-visual)
+- [Modelo CSP](#-modelo-csp)
+- [API Endpoints](#-api-endpoints)
 - [1. Visión del Proyecto](#1-visión-del-proyecto)
 - [2. Descripción del Problema](#2-descripción-del-problema)
 - [3. Complejidad del Problema](#3-complejidad-del-problema)
@@ -14,6 +20,92 @@
 - [11. Stack Tecnológico](#11-stack-tecnológico)
 - [12. Equipo](#12-equipo)
 - [13. Documentación](#13-documentación)
+- [Contributing](#-contributing)
+- [Troubleshooting](#-troubleshooting)
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# 1. Clonar y entrar
+git clone https://github.com/FranklinR26/PFA-TallerProyectos2.git && cd PFA-TallerProyectos2/TP2-main
+
+# 2. Backend (Terminal 1)
+cd server && npm install && npm run dev
+
+# 3. Frontend (Terminal 2)
+cd ../client && npm install && npm run dev
+
+# 4. Abrir en navegador
+http://localhost:5173
+```
+
+---
+
+## 🏗️ Arquitectura Visual
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                      CLIENT (React)                     │
+│  - Dashboard | Gestión Datos | Visualización Horarios   │
+└──────────────────┬──────────────────────────────────────┘
+                   │ HTTP REST API
+┌──────────────────▼──────────────────────────────────────┐
+│                 SERVER (Node.js/Express)                │
+│  ┌────────────┐  ┌──────────┐  ┌────────────────────┐   │
+│  │   Routes   │→ │Validación│→ │  Motor CSP (OR)    │   │
+│  │  /horarios │  │   Data   │  │  - 8,750 vars      │   │
+│  │  /docentes │  │          │  │  - HC-1 a HC-7     │   │
+│  │  /cursos   │  │          │  │  - SC-1 a SC-5     │   │
+│  └────────────┘  └──────────┘  └────────────────────┘   │
+└──────────────────┬──────────────────────────────────────┘
+                   │ MongoDB Driver
+┌──────────────────▼──────────────────────────────────────┐
+│               MongoDB (Atlas/Local)                     │
+│  Collections: docentes, cursos, aulas, horarios         │
+└─────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 🎓 Modelo CSP
+
+| Componente | Descripción | Count |
+|-----------|------------|-------|
+| **Variables** | Asignaciones curso-docente-aula-timeslot | 8,750 |
+| **Restricciones Hard** | HC-1 a HC-7 (obligatorias) | 7 |
+| **Restricciones Soft** | SC-1 a SC-5 (optimización) | 5 |
+| **Solver** | OR-Tools (Google) | Timeout: 5s |
+| **Heurística** | MRV + AC-3 | Parallel search |
+
+**HC-1 a HC-7:** Unique, no overlaps, capacity, room type, availability, co-requisites  
+**SC-1 a SC-5:** Distribution, gaps, preferences, morning hours, temporal centrality
+
+---
+
+## 📡 API Endpoints
+
+| Método | Endpoint | Descripción |
+|--------|----------|------------|
+| **POST** | `/api/horarios/generar` | Ejecutar solver CSP (input: cursos, docentes, aulas) |
+| **GET** | `/api/horarios` | Obtener horarios generados |
+| **GET** | `/api/horarios/:id/validar` | Validar restricciones hard |
+| **POST** | `/api/docentes` | Crear docente |
+| **GET** | `/api/docentes` | Listar docentes |
+| **POST** | `/api/cursos` | Crear curso |
+| **GET** | `/api/cursos` | Listar cursos |
+
+**Ejemplo Request:**
+```bash
+curl -X POST http://localhost:5000/api/horarios/generar \
+  -H "Content-Type: application/json" \
+  -d '{
+    "cursos": [{"id":"C1","docente":"D1","horas":2}],
+    "docentes": [{"id":"D1","nombre":"Prof A"}],
+    "aulas": [{"id":"A1","capacidad":40}]
+  }'
+```
 
 ---
 
@@ -316,12 +408,11 @@ PORT=5000
 MONGODB_URI=mongodb://localhost:27017/horarios_db
 ```
  
-> Si usas MongoDB Atlas, reemplaza `MONGODB_URI` con tu connection string.
  
 ## 3. Instalar y ejecutar el Backend
  
 ```bash
-cd server
+cd Backend
 npm install
 npm run dev
 ```
@@ -333,7 +424,7 @@ El servidor estará disponible en: `http://localhost:5000`
 En otra terminal:
  
 ```bash
-cd ../client
+cd ../Frontend
 npm install
 npm run dev
 ```
@@ -397,12 +488,98 @@ Se adopta Scrum debido a:
 
 La documentación del proyecto se encuentra en:
 
-📂 📂 [Documentacion](./TP2-main/docs)
+📂 [Documentacion](./TP2-main/docs)
 
 Incluye:
 - Plan del proyecto  
 - Backlog  
 - Evidencias de sprints  
 - Documentos de gestión  
+
+### Documentos Complementarios (Consigna Académica)
+
+| Documento | Descripción | Link |
+|-----------|------------|------|
+| **ESPECIFICACION_FORMAL.md** | Definición matemática del CSP (8,750 vars, HC/SC) | [Leer](./ESPECIFICACION_FORMAL.md) |
+| **BACKLOG_FORMAL.md** | 14 Historias de Usuario formalizadas con trazabilidad | [Leer](./BACKLOG_FORMAL.md) |
+| **SPRINTS_OBJETIVOS.md** | 7 sprints bisemanales con objetivos, métricas, riesgos | [Leer](./SPRINTS_OBJETIVOS.md) |
+| **RUTA_CRITICA_PROYECTO.md** | Análisis de dependencias y camino crítico (HU-05 bloqueador) | [Leer](./RUTA_CRITICA_PROYECTO.md) |
+| **METRICAS_AGILES_PROYECTO.xlsx** | Burndown, velocidad, KPIs en tiempo real | [Descargar](./METRICAS_AGILES_PROYECTO.xlsx) |
+| **TEST_REPORT.md** | 25 test cases con trazabilidad a restricciones | [Leer](./TEST_REPORT.md) |
+| **JUSTIFICACION_ANALISIS_CSP_COSTO.md** | Análisis costo profundo: multiplicador 1.385x justificado | [Leer](./JUSTIFICACION_ANALISIS_CSP_COSTO.md) |
+| **PRESUPUESTO_POR_SPRINT.md** | Desglose financiero: $72,468 total (600 horas) | [Leer](./PRESUPUESTO_POR_SPRINT.md) |
+
+---
+
+## 🔗 Restricciones Mapeadas (CSP ↔ HU)
+
+| HC/SC | Descripción | HU Asociada | Tests |
+|-------|-----------|-----------|-------|
+| **HC-1** | Unique assignment | HU-05 Motor CSP | TC-001 |
+| **HC-2** | No docent overlap | HU-05, HU-06 | TC-002 |
+| **HC-3** | Room capacity | HU-05 | TC-003 |
+| **HC-4** | No room overlap | HU-05, HU-06 | TC-004 |
+| **HC-5** | Room type match | HU-05, HU-03 | TC-005 |
+| **HC-6** | Availability (HU-04) | HU-05, HU-04 | TC-006 |
+| **HC-7** | Co-requisites | HU-05, HU-02 | TC-007 |
+| **SC-1** | Distribution | HU-07 | TC-008 |
+| **SC-2** | Minimize gaps | HU-07 | TC-009 |
+| **SC-3** | Preferences | HU-05 | TC-010 |
+| **SC-4** | Morning hours | HU-08 | TC-011 |
+| **SC-5** | Temporal centrality | HU-07 | TC-012 |
+
+---
+
+## 📝 Contributing
+
+### Git Flow Strategy
+
+```
+main (producción)
+  ↑
+release/v1.0.0
+  ↑
+develop (integración)
+  ↑
+feature/HU-05-motor-csp
+```
+
+### Commits Semánticos
+
+```bash
+git commit -m "feat(csp): Implementar Motor CSP con HC-1 a HC-7"
+git commit -m "test(csp): Agregar 25 test cases para validación"
+git commit -m "fix(solver): Corregir timeout en OR-Tools"
+git commit -m "docs(readme): Actualizar API documentation"
+```
+
+### PR Checklist
+
+- [ ] Tests pasan (npm test)
+- [ ] Coverage ≥ 70%
+- [ ] Commit semántico
+- [ ] 1+ revisor aprobó
+- [ ] Documentación actualizada
+
+---
+
+## 🆘 Troubleshooting
+
+**P: Error `MONGODB_URI not found`**  
+R: Crear `.env` en `server/` con: `MONGODB_URI=mongodb://localhost:27017/horarios_db`
+
+**P: Solver timeout después de 5 segundos**  
+R: Reducir cantidad de cursos (debug: `console.log(variables.length)`) o aumentar `num_workers` en config CSP
+
+**P: Tests fallan con `Cannot find module 'or-tools'`**  
+R: `cd server && npm install @google-cloud/or-tools`
+
+---
+
+## 📧 Contacto & Licencia
+
+**Equipo:** Franklin Rojas, Anthony Camarena, Gabriel Landa, Rolfi Escobar  
+**Email:** 73234956@continental.edu.pe  
+**Licencia:** MIT (ver [LICENSE](./LICENSE))
 
 ---
