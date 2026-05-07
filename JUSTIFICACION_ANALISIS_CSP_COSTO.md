@@ -1,6 +1,5 @@
 # Justificación Académica: Análisis Profundo CSP-Costo
 
-**Fecha:** 6 de Mayo, 2026  
 **Asignatura:** Taller de Proyectos 2 - Ingeniería de Sistemas e Informática  
 **Proyecto:** CSP Schedule Solver - Sistema de Generación Óptima de Horarios Académicos  
 

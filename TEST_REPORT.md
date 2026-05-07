@@ -1,9 +1,7 @@
 # TEST_REPORT: CSP Schedule Solver
 **Proyecto:** Taller de Proyectos 2 - Ingeniería de Sistemas  
 **Período de Ejecución:** Post HU-05 Implementation  
-**Versión:** 2.0 (Template + Resultados)  
-**Responsable:** David Landa Sabuco  
-**Fecha Actualización:** 6 de Mayo, 2026
+
 
 ---
 
