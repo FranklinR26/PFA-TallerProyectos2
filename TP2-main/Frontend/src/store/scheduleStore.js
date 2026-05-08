@@ -57,7 +57,7 @@ export const useScheduleStore = create(
           const res = await api.getActiveSchedule();
           const s = res.data;
           set({
-            solution:   Object.fromEntries(s.solution),
+            solution:   s.solution instanceof Map ? Object.fromEntries(s.solution) : s.solution,
             scheduleId: s._id,
             score:      s.score,
             nodes:      s.nodes,
