@@ -1,8 +1,6 @@
 # Presupuesto por Sprint: CSP Schedule Solver
 
-**Fecha:** 6 de Mayo, 2026  
 **Proyecto:** Taller de Proyectos 2 - Ingeniería de Sistemas  
-**Período:** 23 de Marzo - 5 de Julio, 2026 (14 semanas, 7 sprints)
 
 ---
 
@@ -446,7 +444,4 @@ Este desglose vincula directamente:
 4. Escalar si contingencia > 20% consumida (gestión de riesgo).
 
 ---
-
-**Documento Finalizado:** 6 de Mayo, 2026  
-**Versión:** 1.0 (DEFINITIVO)
 
