@@ -105,13 +105,13 @@ $0      └───────────────────────
 - **Contingencia Usada:** 0% (reserva intacta)
 - **Resultado:** ✅ Proyecto within budget
 
-### Escenario B: HU-05 Retrasada 1 Semana (+40 horas)
+### Escenario B: HU-05 Retrasada 1 Semana
 - **Horas Adicionales:** 40 hrs × $54.46 × 1.385x = $3,019
 - **Contingencia Consumida:** 18% ($3,019 / $16,408)
 - **Nuevo Total:** $75,487 (+4.1%)
-- **Resultado:** ⚠️ Dentro de contingencia, aceptable
+- **Resultado:** Aceptable
 
-### Escenario C: HU-05 Retrasada 2 Semanas (+80 horas)
+### Escenario C: HU-05 Retrasada 2 Semanas
 - **Horas Adicionales:** 80 hrs × $54.46 × 1.385x = $6,038
 - **Contingencia Consumida:** 37% ($6,038 / $16,408)
 - **Nuevo Total:** $78,506 (+8.3%)

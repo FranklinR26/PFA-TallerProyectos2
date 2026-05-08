@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const scheduleSchema = new mongoose.Schema({
-  solution: { type: Map, of: mongoose.Schema.Types.Mixed },
+  solution: { type: mongoose.Schema.Types.Mixed, default: {} },
   score:    { type: Number },
   nodes:    { type: Number },
   timeMs:   { type: Number },

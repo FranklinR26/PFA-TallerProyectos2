@@ -19,6 +19,7 @@ import { Classroom } from '../models/Classroom.js';
 import { Section }   from '../models/Section.js';
 import { Course }    from '../models/Course.js';
 import { Student }   from '../models/Student.js';
+import { Schedule }  from '../models/Schedule.js';
 
 await mongoose.connect(process.env.MONGO_URI);
 console.log('✔ Conectado a MongoDB');
@@ -31,6 +32,7 @@ await Promise.all([
   Section.deleteMany({}),
   Course.deleteMany({}),
   Student.deleteMany({}),
+  Schedule.deleteMany({}),
 ]);
 console.log('✔ Colecciones vaciadas');
 

@@ -42,7 +42,10 @@ export const generate = async (req, res) => {
     if (courses.length    === 0) return res.status(400).json({ message: 'No hay cursos registrados' });
     if (classrooms.length === 0) return res.status(400).json({ message: 'No hay aulas registradas' });
 
-    const result = await runSolverAsync({ courses, classrooms, students, weights, params });
+    // JSON round-trip convierte BSON ObjectIds a strings antes de pasar al Worker thread
+    const result = await runSolverAsync(
+      JSON.parse(JSON.stringify({ courses, classrooms, students, weights, params }))
+    );
 
     if (!result.ok) {
       logger.warn('schedule_generation_failed', { reason: result.reason, nodes: result.nodes, timeMs: result.timeMs });
@@ -130,13 +133,15 @@ export const getFull = async (req, res) => {
 
     const solution = schedule.solution instanceof Map
       ? Object.fromEntries(schedule.solution)
-      : schedule.solution;
+      : (schedule.solution ?? {});
 
     const entries = [];
     for (const [varId, val] of Object.entries(solution)) {
-      const [courseId] = varId.split('_');
-      const course = courseMap[courseId];
-      const room   = roomMap[val.roomId];
+      if (!val || typeof val !== 'object') continue;
+      const parts    = varId.split('_');
+      const courseId = parts.slice(0, -1).join('_'); // soporta IDs con guiones bajos
+      const course   = courseMap[courseId];
+      const room     = roomMap[val.roomId];
       if (!course || !room) continue;
       entries.push({
         varId,
@@ -249,7 +254,7 @@ export const patchEntry = async (req, res) => {
 
     const solution = schedule.solution instanceof Map
       ? Object.fromEntries(schedule.solution)
-      : { ...schedule.solution };
+      : { ...(schedule.solution ?? {}) };
 
     if (!solution[varId]) {
       return res.status(404).json({ message: `Entrada ${varId} no encontrada` });
