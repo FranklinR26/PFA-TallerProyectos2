@@ -3,22 +3,27 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
-import { connectDB }           from './config/db.js';
+import { connectDB, clearEnvironmentalMetrics } from './config/db.js';
 import { logger }              from './config/logger.js';
 import { PERF }                from './config/performance.js';
 import { performanceMonitor }  from './middleware/performanceMonitor.js';
+import { co2Monitor }          from './middleware/co2Monitor.js';
 import { cacheMiddleware }     from './middleware/cache.js';
-import authRoutes     from './routes/auth.routes.js';
-import dataRoutes     from './routes/data.routes.js';
-import scheduleRoutes from './routes/schedule.routes.js';
-import portalRoutes   from './routes/portal.routes.js';
-import metricsRoutes  from './routes/metrics.routes.js';
-import periodRoutes   from './routes/period.routes.js';
+import authRoutes          from './routes/auth.routes.js';
+import dataRoutes          from './routes/data.routes.js';
+import scheduleRoutes      from './routes/schedule.routes.js';
+import portalRoutes        from './routes/portal.routes.js';
+import metricsRoutes       from './routes/metrics.routes.js';
+import periodRoutes        from './routes/period.routes.js';
+import environmentalRoutes from './routes/environmental.routes.js';
+import sustainabilityRoutes from './routes/sustainability.routes.js';
 
 const app = express();
 
 app.use(helmet());
 app.use(performanceMonitor);
+// Medición de huella de carbono (CO2.js) en TODAS las rutas.
+app.use(co2Monitor());
 
 const corsOrigin = process.env.NODE_ENV === 'production'
   ? process.env.CLIENT_URL
@@ -40,6 +45,10 @@ app.use('/api/portal',   portalRoutes);
 app.use('/api/metrics',  cacheMiddleware(), metricsRoutes);
 app.use('/api/periods',  periodRoutes);
 
+// Rutas PÚBLICAS de sostenibilidad (sin autenticación).
+app.use('/environmental-impact', environmentalRoutes); // dashboard CO2.js
+app.use('/api/sustainability',   sustainabilityRoutes); // reporte GreenFrame
+
 app.get('/api/health', (_, res) => res.json({
   status:  'ok',
   uptime:  process.uptime(),
@@ -48,7 +57,9 @@ app.get('/api/health', (_, res) => res.json({
   ts:      new Date().toISOString(),
 }));
 
-connectDB().then(() => {
+connectDB().then(async () => {
+  // Limpieza única de métricas ambientales: inicia una nueva sesión de medición.
+  await clearEnvironmentalMetrics();
   app.listen(process.env.PORT, () => {
     logger.info('server_started', { port: process.env.PORT, env: process.env.NODE_ENV });
   });

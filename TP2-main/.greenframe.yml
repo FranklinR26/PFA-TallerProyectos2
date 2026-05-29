@@ -1,0 +1,24 @@
+# Configuración de GreenFrame — análisis full-stack del proyecto MERN.
+# Docs: https://docs.greenframe.io/
+title: TP2 - Sistema de Horarios (Análisis de Sostenibilidad)
+
+# URL del frontend que GreenFrame visitará durante el escenario.
+baseUrl: http://localhost:5173
+
+# Nº de muestras para promediar las mediciones de energía/CO₂.
+samples: 3
+
+# Contenedores de aplicación medidos para el cálculo energético.
+containers:
+  - name: tp2-frontend   # React (Vite)
+  - name: tp2-backend    # Express / Node.js
+
+# IMPORTANTE: MongoDB se declara como contenedor de base de datos aparte
+# para garantizar la precisión del cálculo del tráfico I/O.
+databaseContainers:
+  - name: tp2-mongo      # MongoDB
+
+# Escenario interactivo (Playwright) del flujo crítico.
+scenarios:
+  - name: Login y navegación del portal
+    path: ./scenario.js
