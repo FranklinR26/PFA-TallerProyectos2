@@ -1,0 +1,16 @@
+{
+  "name": "tp2-sustainability",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scripts de sostenibilidad (GreenFrame) para el proyecto MERN TP2.",
+  "scripts": {
+    "sustainability:analyze": "greenframe analyze --format=json > Backend/public/assets/greenframe-latest.json",
+    "sustainability:analyze:text": "greenframe analyze > Backend/public/assets/greenframe-latest.txt",
+    "sustainability:up": "docker compose up -d --build",
+    "sustainability:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@greenframe/cli": "^3.4.0",
+    "playwright": "^1.48.0"
+  }
+}
