@@ -9,6 +9,7 @@ import GeneratePage  from './pages/GeneratePage';
 import DashboardPage from './pages/DashboardPage';
 import SchedulePage  from './pages/SchedulePage';
 import DocumentationPage from './pages/DocumentationPage';
+import SustainabilityPage from './pages/SustainabilityPage';
 
 function Layout({ children }) {
   const { pathname } = useLocation();
@@ -81,6 +82,14 @@ export default function App() {
           <Layout>
             <ProtectedRoute roles={['admin', 'coordinador', 'docente', 'estudiante']}>
               <DocumentationPage />
+            </ProtectedRoute>
+          </Layout>
+        } />
+
+        <Route path="/sostenibilidad" element={
+          <Layout>
+            <ProtectedRoute roles={['admin', 'coordinador', 'docente', 'estudiante']}>
+              <SustainabilityPage />
             </ProtectedRoute>
           </Layout>
         } />

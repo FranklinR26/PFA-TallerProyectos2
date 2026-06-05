@@ -8,6 +8,7 @@ const LINKS = {
     { to: '/generar',   label: 'Generar' },
     { to: '/horario',   label: 'Horario' },
     { to: '/dashboard', label: 'Dashboard' },
+    { to: '/sostenibilidad', label: 'Sostenibilidad' },
     { to: '/evidencias', label: 'Evidencias' },
   ],
   coordinador: [
@@ -15,14 +16,17 @@ const LINKS = {
     { to: '/generar',   label: 'Generar' },
     { to: '/horario',   label: 'Horario' },
     { to: '/dashboard', label: 'Dashboard' },
+    { to: '/sostenibilidad', label: 'Sostenibilidad' },
     { to: '/evidencias', label: 'Evidencias' },
   ],
   docente:    [
     { to: '/portal', label: 'Mi Horario' },
+    { to: '/sostenibilidad', label: 'Sostenibilidad' },
     { to: '/evidencias', label: 'Evidencias' },
   ],
   estudiante: [
     { to: '/portal', label: 'Portal' },
+    { to: '/sostenibilidad', label: 'Sostenibilidad' },
     { to: '/evidencias', label: 'Evidencias' },
   ],
 };
