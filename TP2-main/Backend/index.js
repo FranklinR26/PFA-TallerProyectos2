@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
+import compression from 'compression';
 import { connectDB, clearEnvironmentalMetrics } from './config/db.js';
 import { logger }              from './config/logger.js';
 import { PERF }                from './config/performance.js';
@@ -20,6 +21,8 @@ import sustainabilityRoutes from './routes/sustainability.routes.js';
 
 const app = express();
 
+// Compresión gzip — reduce hasta un 70 % el tamaño de respuestas JSON/HTML
+app.use(compression({ level: 6, threshold: 1024 }));
 app.use(helmet());
 app.use(performanceMonitor);
 // Medición de huella de carbono (CO2.js) en TODAS las rutas.
@@ -39,11 +42,13 @@ const authLimiter = rateLimit({
 });
 
 app.use('/api/auth',     authLimiter, authRoutes);
-app.use('/api/data',     dataRoutes);
+// Caché de 30 s en rutas de datos de referencia (catálogos que cambian poco)
+app.use('/api/data',     cacheMiddleware(30_000), dataRoutes);
 app.use('/api/schedule', scheduleRoutes);
 app.use('/api/portal',   portalRoutes);
+// Caché de métricas con TTL propio definido en PERF
 app.use('/api/metrics',  cacheMiddleware(), metricsRoutes);
-app.use('/api/periods',  periodRoutes);
+app.use('/api/periods',  cacheMiddleware(60_000), periodRoutes);
 
 // Rutas PÚBLICAS de sostenibilidad (sin autenticación).
 app.use('/environmental-impact', environmentalRoutes); // dashboard CO2.js

@@ -4,6 +4,7 @@ import { Section }   from '../models/Section.js';
 import { Course }    from '../models/Course.js';
 import { Student }   from '../models/Student.js';
 import { User }      from '../models/User.js';
+import { invalidateCache } from '../middleware/cache.js';
 
 const notFound = (res, entity) =>
   res.status(404).json({ message: `${entity} no encontrado/a` });
@@ -15,7 +16,11 @@ const serverError = (res, err) =>
 
 export const getTeachers = async (_, res) => {
   try {
-    const teachers = await Teacher.find().sort({ name: 1 });
+    // .lean() devuelve POJOs en lugar de documentos Mongoose → ~40 % menos memoria y CPU
+    const teachers = await Teacher.find()
+      .select('name email availability createdAt')
+      .sort({ name: 1 })
+      .lean();
     res.json(teachers);
   } catch (err) { serverError(res, err); }
 };
@@ -46,6 +51,7 @@ export const createTeacher = async (req, res) => {
       entityId:     teacher._id,
     });
 
+    invalidateCache('/api/data');
     res.status(201).json(teacher);
   } catch (err) { serverError(res, err); }
 };
@@ -56,6 +62,7 @@ export const updateTeacher = async (req, res) => {
       req.params.id, req.body, { new: true, runValidators: true }
     );
     if (!teacher) return notFound(res, 'Docente');
+    invalidateCache('/api/data');
     res.json(teacher);
   } catch (err) { serverError(res, err); }
 };
@@ -74,6 +81,7 @@ export const deleteTeacher = async (req, res) => {
     // Eliminar User vinculado
     await User.deleteOne({ entityId: req.params.id, role: 'docente' });
 
+    invalidateCache('/api/data');
     res.json({ message: 'Docente eliminado' });
   } catch (err) { serverError(res, err); }
 };
@@ -82,7 +90,10 @@ export const deleteTeacher = async (req, res) => {
 
 export const getClassrooms = async (_, res) => {
   try {
-    const classrooms = await Classroom.find().sort({ name: 1 });
+    const classrooms = await Classroom.find()
+      .select('name type capacity')
+      .sort({ name: 1 })
+      .lean();
     res.json(classrooms);
   } catch (err) { serverError(res, err); }
 };
@@ -116,7 +127,10 @@ export const deleteClassroom = async (req, res) => {
 
 export const getSections = async (_, res) => {
   try {
-    const sections = await Section.find().sort({ name: 1 });
+    const sections = await Section.find()
+      .select('name')
+      .sort({ name: 1 })
+      .lean();
     res.json(sections);
   } catch (err) { serverError(res, err); }
 };
@@ -149,18 +163,38 @@ export const deleteSection = async (req, res) => {
 
 // ── COURSES ───────────────────────────────────────────────────────────────────
 
-export const getCourses = async (_, res) => {
+export const getCourses = async (req, res) => {
   try {
-    const courses = await Course.find()
+    // Paginación: ?page=1&limit=20 (por defecto devuelve todos si no se pasan parámetros)
+    const page  = parseInt(req.query.page)  || null;
+    const limit = parseInt(req.query.limit) || null;
+
+    let query = Course.find()
       .populate('teacher', 'name')
-      .sort({ name: 1 });
-    const withEnrollment = await Promise.all(
-      courses.map(async (c) => {
-        const enrolled = await Student.countDocuments({ courses: c._id });
-        return { ...c.toObject(), enrolled };
-      })
+      .select('name teacher roomType capacity sessionsPerWeek blocksPerSession')
+      .sort({ name: 1 })
+      .lean();
+
+    if (page && limit) query = query.skip((page - 1) * limit).limit(limit);
+
+    const courses = await query;
+    const total   = page && limit ? await Course.countDocuments() : courses.length;
+
+    // Enrollment en una sola agregación en lugar de N queries individuales
+    const courseIds    = courses.map(c => c._id);
+    const enrollCounts = await Student.aggregate([
+      { $match:   { courses: { $in: courseIds } } },
+      { $unwind:  '$courses' },
+      { $match:   { courses: { $in: courseIds } } },
+      { $group:   { _id: '$courses', enrolled: { $sum: 1 } } },
+    ]);
+    const enrollMap = Object.fromEntries(enrollCounts.map(e => [e._id.toString(), e.enrolled]));
+    const withEnrollment = courses.map(c => ({ ...c, enrolled: enrollMap[c._id.toString()] ?? 0 }));
+
+    res.json(page && limit
+      ? { data: withEnrollment, total, page, pages: Math.ceil(total / limit) }
+      : withEnrollment
     );
-    res.json(withEnrollment);
   } catch (err) { serverError(res, err); }
 };
 
@@ -203,13 +237,28 @@ export const deleteCourse = async (req, res) => {
 
 // ── STUDENTS ──────────────────────────────────────────────────────────────────
 
-export const getStudents = async (_, res) => {
+export const getStudents = async (req, res) => {
   try {
-    const students = await Student.find()
+    // Paginación: ?page=1&limit=20
+    const page  = parseInt(req.query.page)  || null;
+    const limit = parseInt(req.query.limit) || null;
+
+    let query = Student.find()
       .populate('section', 'name')
       .populate('courses', 'name')
-      .sort({ code: 1 });
-    res.json(students);
+      .select('code name section courses waitlist')
+      .sort({ code: 1 })
+      .lean();
+
+    if (page && limit) query = query.skip((page - 1) * limit).limit(limit);
+
+    const students = await query;
+    const total    = page && limit ? await Student.countDocuments() : students.length;
+
+    res.json(page && limit
+      ? { data: students, total, page, pages: Math.ceil(total / limit) }
+      : students
+    );
   } catch (err) { serverError(res, err); }
 };
 
