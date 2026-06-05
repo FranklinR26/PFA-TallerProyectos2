@@ -531,7 +531,7 @@ Incluye:
 
 ## 📧 Contacto & Licencia
 
-**Equipo:** Franklin Rojas, Anthony Camarena, Gabriel Landa, Rolfi Escobar  
+**Equipo:** Franklin Rojas, Anthony Camarena, Gabriel Landa, Rolfi Escobar, Piero Curassi  
 **Email:** 73234956@continental.edu.pe  
 **Licencia:** MIT (ver [LICENSE](./LICENSE))
 
