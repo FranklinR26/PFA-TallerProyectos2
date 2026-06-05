@@ -13,6 +13,7 @@ const GeneratePage    = lazy(() => import('./pages/GeneratePage'));
 const DashboardPage   = lazy(() => import('./pages/DashboardPage'));
 const SchedulePage    = lazy(() => import('./pages/SchedulePage'));
 const DocumentationPage = lazy(() => import('./pages/DocumentationPage'));
+const SustainabilityPage = lazy(() => import('./pages/SustainabilityPage'));
 
 function PageLoader() {
   return (
@@ -95,6 +96,14 @@ export default function App() {
           <Layout>
             <ProtectedRoute roles={['admin', 'coordinador', 'docente', 'estudiante']}>
               <DocumentationPage />
+            </ProtectedRoute>
+          </Layout>
+        } />
+
+        <Route path="/sostenibilidad" element={
+          <Layout>
+            <ProtectedRoute roles={['admin', 'coordinador', 'docente', 'estudiante']}>
+              <SustainabilityPage />
             </ProtectedRoute>
           </Layout>
         } />

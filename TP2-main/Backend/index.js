@@ -19,6 +19,7 @@ import portalRoutes        from './routes/portal.routes.js';
 import metricsRoutes       from './routes/metrics.routes.js';
 import periodRoutes        from './routes/period.routes.js';
 import environmentalRoutes from './routes/environmental.routes.js';
+import environmentalApiRoutes from './routes/environmentalApi.routes.js';
 import sustainabilityRoutes from './routes/sustainability.routes.js';
 
 const app = express();
@@ -64,6 +65,7 @@ app.use('/api/periods',  cacheMiddleware(60_000), periodRoutes);
 
 // Rutas PÚBLICAS de sostenibilidad (sin autenticación).
 app.use('/environmental-impact', environmentalRoutes); // dashboard CO2.js
+app.use('/api/environmental-impact', environmentalApiRoutes); // dashboard CO2.js (JSON para Frontend)
 app.use('/api/sustainability',   sustainabilityRoutes); // reporte GreenFrame
 
 app.get('/api/health', (_, res) => res.json({
