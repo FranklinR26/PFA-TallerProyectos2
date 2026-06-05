@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "images:optimize": "node scripts/optimize-images.mjs",
+    "images:report": "node scripts/optimize-images.mjs --dry"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -29,6 +31,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.5.0",
-    "vite": "^6.4.2"
+    "vite": "^6.4.2",
+    "sharp": "^0.33.5"
   }
 }

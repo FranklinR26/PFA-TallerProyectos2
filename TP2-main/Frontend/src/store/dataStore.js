@@ -13,23 +13,30 @@ export const useDataStore = create((set, get) => ({
   fetchAll: async () => {
     set({ loading: true, error: null });
     try {
-      const [t, r, sec, co, st] = await Promise.all([
-        api.getTeachers(),
-        api.getClassrooms(),
-        api.getSections(),
-        api.getCourses(),
-        api.getStudents(),
-      ]);
+      // 1 sola peticion HTTP en lugar de 5 (reduccion de solicitudes HTTP)
+      const { data } = await api.getBootstrap();
       set({
-        teachers:   t.data,
-        classrooms: r.data,
-        sections:   sec.data,
-        courses:    co.data,
-        students:   st.data,
+        teachers:   data.teachers,
+        classrooms: data.classrooms,
+        sections:   data.sections,
+        courses:    data.courses,
+        students:   data.students,
         loading: false,
       });
     } catch (err) {
-      set({ error: err.response?.data?.message || err.message, loading: false });
+      // Fallback resiliente: si /data/all no esta disponible, usa rutas individuales
+      try {
+        const [t, r, sec, co, st] = await Promise.all([
+          api.getTeachers(), api.getClassrooms(), api.getSections(),
+          api.getCourses(), api.getStudents(),
+        ]);
+        set({
+          teachers: t.data, classrooms: r.data, sections: sec.data,
+          courses: co.data, students: st.data, loading: false,
+        });
+      } catch (err2) {
+        set({ error: err2.response?.data?.message || err2.message, loading: false });
+      }
     }
   },
 

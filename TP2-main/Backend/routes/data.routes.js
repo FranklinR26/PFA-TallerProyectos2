@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { verifyToken } from '../middleware/verifyToken.js';
 import { checkRole }   from '../middleware/checkRole.js';
 import {
+  getBootstrap,
   getTeachers, createTeacher, updateTeacher, deleteTeacher,
   getClassrooms, createClassroom, updateClassroom, deleteClassroom,
   getSections, createSection, updateSection, deleteSection,
@@ -15,6 +16,9 @@ const router = Router();
 router.use(verifyToken);
 
 const adminCoord = checkRole('admin', 'coordinador');
+
+// Endpoint agregado: 5 catalogos en 1 sola peticion (reduccion de solicitudes HTTP)
+router.get('/all', adminCoord, getBootstrap);
 
 router.get   ('/teachers',     getTeachers);
 router.post  ('/teachers',     adminCoord, createTeacher);

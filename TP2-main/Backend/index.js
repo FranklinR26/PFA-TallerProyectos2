@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -34,6 +36,16 @@ const corsOrigin = process.env.NODE_ENV === 'production'
 
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json());
+
+// Assets estaticos con cache agresiva (archivos versionados/inmutables).
+// Reduce solicitudes HTTP repetidas: el navegador reutiliza la copia local
+// y solo revalida con ETag (respuestas 304 sin cuerpo).
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use('/assets', express.static(path.join(__dirname, 'public/assets'), {
+  maxAge: '30d',
+  immutable: true,
+  etag: true,
+}));
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
