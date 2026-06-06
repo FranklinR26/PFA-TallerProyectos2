@@ -21,11 +21,11 @@ export const useDataStore = create((set, get) => ({
         api.getStudents(),
       ]);
       set({
-        teachers:   t.data,
-        classrooms: r.data,
-        sections:   sec.data,
-        courses:    co.data,
-        students:   st.data,
+        teachers:   t.data || t,
+        classrooms: r.data || r,
+        sections:   sec.data || sec,
+        courses:    co.data || co,
+        students:   st.data || st,
         loading: false,
       });
     } catch (err) {

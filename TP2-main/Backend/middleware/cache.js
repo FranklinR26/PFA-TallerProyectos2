@@ -8,7 +8,7 @@ export function cacheMiddleware(ttlMs = PERF.METRICS_CACHE_TTL_MS) {
     const key    = req.originalUrl;
     const cached = store.get(key);
     if (cached && Date.now() - cached.ts < ttlMs) {
-      return res.json({ ...cached.data, _cached: true });
+      return res.json(cached.data);
     }
     const originalJson = res.json.bind(res);
     res.json = (data) => {

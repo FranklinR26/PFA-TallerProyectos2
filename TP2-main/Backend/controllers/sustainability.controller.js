@@ -7,8 +7,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // El script `npm run sustainability:analyze` deja el reporte aquí.
 const REPORT_DIR  = path.resolve(__dirname, '..', 'public', 'assets');
-const JSON_REPORT = path.join(REPORT_DIR, 'greenframe-latest.json');
-const TXT_REPORT  = path.join(REPORT_DIR, 'greenframe-latest.txt');
+const JSON_REPORT = path.join(REPORT_DIR, 'carbometer-latest.json');
+const TXT_REPORT  = path.join(REPORT_DIR, 'carbometer-latest.txt');
 
 /**
  * Lee el último reporte de GreenFrame del disco.

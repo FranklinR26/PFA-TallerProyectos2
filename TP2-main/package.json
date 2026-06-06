@@ -2,15 +2,17 @@
   "name": "tp2-sustainability",
   "version": "1.0.0",
   "private": true,
-  "description": "Scripts de sostenibilidad (GreenFrame) para el proyecto MERN TP2.",
+  "type": "module",
+  "description": "Scripts de sostenibilidad para el proyecto MERN TP2.",
   "scripts": {
-    "sustainability:analyze": "greenframe analyze --format=json > Backend/public/assets/greenframe-latest.json",
-    "sustainability:analyze:text": "greenframe analyze > Backend/public/assets/greenframe-latest.txt",
+    "sustainability:analyze": "node scripts/sustainability-analysis.js",
+    "sustainability:analyze:text": "node scripts/sustainability-analysis.js --text",
     "sustainability:up": "docker compose up -d --build",
     "sustainability:down": "docker compose down"
   },
   "devDependencies": {
-    "@greenframe/cli": "^3.4.0",
+    "@tgwf/co2": "^0.18.0",
+    "dotenv": "^17.4.2",
     "playwright": "^1.48.0"
   }
 }

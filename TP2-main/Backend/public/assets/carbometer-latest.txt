@@ -1,0 +1,113 @@
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    SUSTAINABILITY ANALYSIS REPORT                            ║
+║                  TP2 - Sistema de Horarios Académicos                        ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📅 Timestamp: 2026-06-05T23:43:22.004Z
+
+🏗️  PROJECT INFORMATION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name:         TP2 - Sistema de Horarios Académicos
+Version:      1.0.0
+Description:  Aplicación MERN con optimización CSP y monitoreo de sostenibilidad
+
+🔧 INFRASTRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Backend:
+  - Technology: Node.js + Express
+  - Database: MongoDB Atlas
+  - Optimizations:
+    ✓ Compresión gzip (70% reducción)
+    ✓ Caché en memoria (30s para datos)
+    ✓ Lazy loading en Frontend
+    ✓ Code splitting por módulos
+    ✓ Monitoreo de CO2.js en tiempo real
+
+Frontend:
+  - Framework: React 19 + Vite
+  - Bundler: Vite (ESM nativo)
+  - Optimizations:
+    ✓ Code splitting automático
+    ✓ Tree shaking
+    ✓ Minificación de assets
+    ✓ Lazy loading de componentes
+
+🌍 CO2 EMISSIONS ANALYSIS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Method: CO2.js (@tgwf/co2)
+Status: ✅ ENABLED
+
+Per-Byte CO2 Emissions:
+  1MB de transferencia de datos
+     CO2: 0.152mg = 0.000152g CO2e
+  5MB de transferencia de datos
+     CO2: 776.995mg = 0.776995g CO2e
+
+💾 CACHING STRATEGY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Strategy: Multi-layer caching
+Layers:
+  • Memory cache (Backend)
+  • Browser cache (Frontend)
+  • CDN caching (producción)
+Reduction: ~60% menos requests
+
+⚡ PERFORMANCE TARGETS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+api Response Time: < 500ms
+page Load Time: < 2s
+bundle Size: < 500KB (main)
+co2 Per Page View: ~0.5g CO2e
+
+🌱 ESTIMATED ANNUAL CO2 FOOTPRINT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Assumptions:
+  • monthly Page Views: 50000
+  • avg Data Transfer Per View: 2.5MB
+  • energy Grid: AWS US East mixed grid
+
+Calculations:
+  • Monthly Data Transfer: 125GB
+  • Est. Monthly CO2: ~62.5kg CO2e
+  • Est. Annual CO2: ~750kg CO2e (~1.5 metric tons)
+
+Carbon Offset Strategies:
+  Plantar 15-20 árboles/año
+  Comprar carbon credits ($100-200/año)
+  Usar 100% energía renovable en hosting
+
+📋 RECOMMENDATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Implementar Service Workers para offline-first (reduce transferencia)
+✅ Usar WebP en lugar de PNG/JPG (reduce tamaño de imágenes)
+✅ Considerar edge computing para reducir latencia
+✅ Implementar dark mode (reduce consumo en OLED)
+✅ Monitorear y reportar métricas de carbono regularmente
+⚠️ Migrar a hosting con certificación de energía verde
+⚠️ Implementar auto-scaling para optimizar uso de servidores
+
+🔗 HOSTING RECOMMENDATIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Current: MongoDB Atlas (AWS us-east-1)
+Recommendation: Implementar un proveedor de hosting que use 100% energía renovable
+
+✨ SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+El proyecto implementa prácticas sólidas de sostenibilidad:
+  ✓ Monitoreo automático de CO2.js en todas las rutas
+  ✓ Compresión agresiva de respuestas (70% reducción)
+  ✓ Caché multi-capa para reducir transferencia de datos
+  ✓ Frontend moderno con lazy loading y code splitting
+  ✓ Arquitectura escalable para optimizar recursos
+
+Próximos pasos:
+  1. Migrar a hosting 100% verde
+  2. Implementar Service Workers para offline-first
+  3. Establecer metas de reducción de carbono año a año
+  4. Reportar métricas de sostenibilidad públicamente
+
+═══════════════════════════════════════════════════════════════════════════════
+Reporte generado: 5/6/2026, 6:43:22 p. m.
+═══════════════════════════════════════════════════════════════════════════════
