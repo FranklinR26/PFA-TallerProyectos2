@@ -12,6 +12,51 @@ const notFound = (res, entity) =>
 const serverError = (res, err) =>
   res.status(500).json({ message: err.message });
 
+// -- BOOTSTRAP (reduccion de solicitudes HTTP) --------------------------------
+
+/**
+ * GET /api/data/all
+ * Devuelve los 5 catalogos (teachers, classrooms, sections, courses, students)
+ * en UNA sola respuesta HTTP, en lugar de 5 peticiones paralelas.
+ *
+ * Beneficio Green Software: un solo handshake TCP/TLS, una sola pasada de
+ * middleware (auth, CORS, compresion gzip) y una sola respuesta comprimida,
+ * reduciendo overhead de red y CPU del servidor por carga de la vista /datos.
+ */
+export const getBootstrap = async (_, res) => {
+  try {
+    const [teachers, classrooms, sections, courses, students] = await Promise.all([
+      Teacher.find().select('name email availability createdAt').sort({ name: 1 }).lean(),
+      Classroom.find().select('name type capacity').sort({ name: 1 }).lean(),
+      Section.find().select('name').sort({ name: 1 }).lean(),
+      Course.find()
+        .populate('teacher', 'name')
+        .select('name teacher roomType capacity sessionsPerWeek blocksPerSession')
+        .sort({ name: 1 }).lean(),
+      Student.find()
+        .populate('section', 'name')
+        .populate('courses', 'name')
+        .select('code name section courses waitlist')
+        .sort({ code: 1 }).lean(),
+    ]);
+
+    // Enrollment de cursos en 1 sola agregacion (sin antipatron N+1)
+    const courseIds    = courses.map(c => c._id);
+    const enrollCounts = await Student.aggregate([
+      { $match:  { courses: { $in: courseIds } } },
+      { $unwind: '$courses' },
+      { $match:  { courses: { $in: courseIds } } },
+      { $group:  { _id: '$courses', enrolled: { $sum: 1 } } },
+    ]);
+    const enrollMap = Object.fromEntries(enrollCounts.map(e => [e._id.toString(), e.enrolled]));
+    const coursesWithEnrollment = courses.map(c => ({
+      ...c, enrolled: enrollMap[c._id.toString()] ?? 0,
+    }));
+
+    res.json({ teachers, classrooms, sections, courses: coursesWithEnrollment, students });
+  } catch (err) { serverError(res, err); }
+};
+
 // ── TEACHERS ──────────────────────────────────────────────────────────────────
 
 export const getTeachers = async (_, res) => {

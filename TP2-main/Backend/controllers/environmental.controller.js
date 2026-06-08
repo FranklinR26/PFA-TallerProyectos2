@@ -231,3 +231,35 @@ export async function getDashboard(req, res) {
     res.status(500).type('html').send('<h1>Error al generar el dashboard ambiental</h1>');
   }
 }
+
+/**
+ * GET /api/environmental-impact — API pública (JSON) para consumir desde el Frontend.
+ * Devuelve el resumen agregado + últimas mediciones (para tablas/gráficas).
+ */
+export async function getEnvironmentalImpactJson(req, res) {
+  try {
+    const limitRaw = Number(req.query.limit);
+    const limit = Number.isFinite(limitRaw)
+      ? Math.max(1, Math.min(limitRaw, TABLE_LIMIT))
+      : 200;
+
+    const [summary, rows] = await Promise.all([
+      getEnvironmentalSummary(),
+      EnvironmentalMetric.find().sort({ timestamp: -1 }).limit(limit).lean(),
+    ]);
+
+    return res.status(200).json({
+      status: 'ok',
+      source: 'co2.js',
+      hostingGreen: isGreenHosting,
+      summary,
+      rows,
+    });
+  } catch (err) {
+    logger.error('environmental_json_error', { message: err.message });
+    return res.status(500).json({
+      status: 'error',
+      message: 'No se pudo obtener el resumen ambiental.',
+    });
+  }
+}

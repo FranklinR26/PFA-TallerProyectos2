@@ -1,4 +1,6 @@
 import 'dotenv/config';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -17,6 +19,7 @@ import portalRoutes        from './routes/portal.routes.js';
 import metricsRoutes       from './routes/metrics.routes.js';
 import periodRoutes        from './routes/period.routes.js';
 import environmentalRoutes from './routes/environmental.routes.js';
+import environmentalApiRoutes from './routes/environmentalApi.routes.js';
 import sustainabilityRoutes from './routes/sustainability.routes.js';
 
 const app = express();
@@ -35,6 +38,16 @@ const corsOrigin = process.env.NODE_ENV === 'production'
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json());
 
+// Assets estaticos con cache agresiva (archivos versionados/inmutables).
+// Reduce solicitudes HTTP repetidas: el navegador reutiliza la copia local
+// y solo revalida con ETag (respuestas 304 sin cuerpo).
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+app.use('/assets', express.static(path.join(__dirname, 'public/assets'), {
+  maxAge: '30d',
+  immutable: true,
+  etag: true,
+}));
+
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 20,
@@ -52,6 +65,7 @@ app.use('/api/periods',  cacheMiddleware(60_000), periodRoutes);
 
 // Rutas PÚBLICAS de sostenibilidad (sin autenticación).
 app.use('/environmental-impact', environmentalRoutes); // dashboard CO2.js
+app.use('/api/environmental-impact', environmentalApiRoutes); // dashboard CO2.js (JSON para Frontend)
 app.use('/api/sustainability',   sustainabilityRoutes); // reporte GreenFrame
 
 app.get('/api/health', (_, res) => res.json({

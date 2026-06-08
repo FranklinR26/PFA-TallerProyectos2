@@ -1,5 +1,8 @@
 import axiosClient from './axiosClient';
 
+// Endpoint agregado: trae los 5 catalogos en 1 sola peticion HTTP
+export const getBootstrap   = ()         => axiosClient.get('/data/all');
+
 export const getTeachers    = ()         => axiosClient.get('/data/teachers');
 export const createTeacher  = (data)     => axiosClient.post('/data/teachers', data);
 export const updateTeacher  = (id, data) => axiosClient.put(`/data/teachers/${id}`, data);
