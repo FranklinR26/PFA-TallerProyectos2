@@ -8,5 +8,11 @@ export default defineConfig({
     globals: true,
     setupFiles: 'src/setupTests.js',
     include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: ['src/**/*.{js,jsx}'],
+      exclude: ['src/__tests__/**', 'src/mocks/**', 'src/setupTests.js'],
+    },
   },
 })

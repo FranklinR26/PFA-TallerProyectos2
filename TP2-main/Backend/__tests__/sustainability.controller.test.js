@@ -1,10 +1,11 @@
 /**
- * TDD - controlador de sostenibilidad (GreenFrame).
- * Crea y elimina el archivo de reporte real en public/assets para verificar
- * la lectura asincrona y el manejo de "no hay reporte".
+ * TDD - controlador de sostenibilidad (Carbometer).
+ * Manipula los archivos de reporte reales en public/assets, por lo que se
+ * respaldan antes de la suite y se restauran al final para no alterar el
+ * working tree (los carbometer-latest.* están versionados como evidencia).
  */
-import { describe, it, expect, afterEach, beforeAll } from 'vitest';
-import { writeFile, rm, mkdir } from 'node:fs/promises';
+import { describe, it, expect, afterEach, beforeAll, afterAll } from 'vitest';
+import { writeFile, rm, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import express from 'express';
@@ -13,16 +14,36 @@ import { readLatestReport, getSustainabilityReport } from '../controllers/sustai
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const ASSETS = path.resolve(here, '..', 'public', 'assets');
-const JSON_REPORT = path.join(ASSETS, 'greenframe-latest.json');
-const TXT_REPORT = path.join(ASSETS, 'greenframe-latest.txt');
+const JSON_REPORT = path.join(ASSETS, 'carbometer-latest.json');
+const TXT_REPORT  = path.join(ASSETS, 'carbometer-latest.txt');
+
+const backups = new Map();
 
 beforeAll(async () => {
   await mkdir(ASSETS, { recursive: true });
+  // Respaldar archivos existentes para restaurarlos al terminar
+  for (const file of [JSON_REPORT, TXT_REPORT]) {
+    try {
+      backups.set(file, await readFile(file));
+    } catch {
+      // archivo no existía — nada que respaldar
+    }
+  }
+  // Estado limpio antes del primer test
+  await rm(JSON_REPORT, { force: true });
+  await rm(TXT_REPORT,  { force: true });
 });
 
 afterEach(async () => {
   await rm(JSON_REPORT, { force: true });
-  await rm(TXT_REPORT, { force: true });
+  await rm(TXT_REPORT,  { force: true });
+});
+
+afterAll(async () => {
+  // Restaurar archivos originales
+  for (const [file, content] of backups) {
+    await writeFile(file, content);
+  }
 });
 
 describe('readLatestReport', () => {

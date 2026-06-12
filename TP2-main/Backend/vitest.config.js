@@ -6,8 +6,15 @@ export default defineConfig({
     include: ['__tests__/**/*.test.js'],
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      include: ['csp/**/*.js'],
+      reporter: ['text', 'json', 'html', 'lcov'],
+      include: [
+        'csp/**/*.js',
+        'controllers/**/*.js',
+        'middleware/**/*.js',
+        'routes/**/*.js',
+        'models/**/*.js',
+        'config/**/*.js',
+      ],
     },
   },
 });

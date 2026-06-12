@@ -61,9 +61,9 @@ export default function SchedulePage() {
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   // Listas únicas para los dropdowns
-  const scheduleTeachers = [...new Set(entries.map(e => e.teacher).filter(t => t && t !== '—'))].sort();
-  const scheduleRooms    = [...new Set(entries.map(e => e.room).filter(Boolean))].sort();
-  const scheduleCourses  = [...new Set(entries.map(e => e.courseName).filter(Boolean))].sort();
+  const scheduleTeachers = [...new Set(entries.map(e => e.teacher).filter(t => t && t !== '—'))].sort((a, b) => a.localeCompare(b));
+  const scheduleRooms    = [...new Set(entries.map(e => e.room).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  const scheduleCourses  = [...new Set(entries.map(e => e.courseName).filter(Boolean))].sort((a, b) => a.localeCompare(b));
 
   // Estudiante seleccionado
   const selectedStudentObj = allStudents.find(s => s._id === selectedStudentId) ?? null;
@@ -95,7 +95,7 @@ export default function SchedulePage() {
   }
 
   // Colores por curso (basado en TODOS los entries para consistencia)
-  const allCourseNames = [...new Set(entries.map(e => e.courseName))].sort();
+  const allCourseNames = [...new Set(entries.map(e => e.courseName))].sort((a, b) => a.localeCompare(b));
   const colorMap = Object.fromEntries(allCourseNames.map((n, i) => [n, PALETTE[i % PALETTE.length]]));
 
   // Grid
@@ -331,7 +331,7 @@ export default function SchedulePage() {
       {/* ── Leyenda ── */}
       {filtered.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 16 }}>
-          {[...new Set(filtered.map(e => e.courseName))].sort().map(name => (
+          {[...new Set(filtered.map(e => e.courseName))].sort((a, b) => a.localeCompare(b)).map(name => (
             <span key={name} style={{ display: 'inline-flex', alignItems: 'center', gap: 5, fontSize: 11, padding: '3px 10px', borderRadius: 20, border: '1px solid #d8d8d8', background: '#fff', color: '#363636' }}>
               <span style={{ width: 7, height: 7, borderRadius: '50%', background: colorMap[name], flexShrink: 0 }} />
               {name}
