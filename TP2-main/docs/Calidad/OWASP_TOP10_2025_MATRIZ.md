@@ -17,7 +17,7 @@ Se auditó la aplicación contra las 10 categorías del OWASP Top 10 2025. Se id
 | H-03 | A05 — Injection (NoSQL) | `login`/`register` aceptaban objetos en `email`/`password` (vector de inyección de operadores Mongo, p. ej. `{"$gt":""}`) | Alta | ✅ Mitigado | `auth.controller.js`: validación de tipo `string` + regex de email antes de consultar la BD |
 | H-04 | A07 — Authentication Failures | Sin política de fortaleza de contraseñas en el registro | Media | ✅ Mitigado | `auth.controller.js`: mínimo 8 caracteres, letras y números |
 | H-05 | A02 — Security Misconfiguration | Archivo `.env` versionado en el repositorio (aunque vacío, normaliza la mala práctica) | Baja | ✅ Mitigado | `git rm --cached .env`; `.gitignore` ya lo excluía; existe `.env.example` documentado |
-| H-06 | A04 — Cryptographic Failures / A07 | El token JWT se persiste en `localStorage` (zustand `persist`), accesible ante un XSS exitoso | Media | ⚠️ Riesgo residual | Mitigaciones compensatorias: React escapa la salida por defecto, no se usa `dangerouslySetInnerHTML`, helmet aplica cabeceras. Mejora futura: cookie `httpOnly` + `SameSite=Strict` |
+| H-06 | A04 — Cryptographic Failures / A07 | El token JWT se persistía en `localStorage`; ahora se almacena en `sessionStorage` del navegador, reduciendo la exposición entre sesiones | Media | ⚠️ Riesgo residual | Mitigaciones aplicadas: `Frontend/src/store/authStore.js` usa `createJSONStorage(() => sessionStorage)`. Se mantiene la mejora futura a cookie `httpOnly` + `SameSite=Strict` para cerrar el riesgo residual ante XSS |
 | H-07 | A09 — Logging & Alerting Failures | No hay alertas ante intentos de fuerza bruta (solo rate-limit silencioso) | Baja | ⚠️ Riesgo residual | Existe logging estructurado (`config/logger.js`) y rate-limit de 20 req/15 min en `/api/auth`; falta canal de alerta |
 
 ## 3. Controles ya existentes verificados (sin hallazgo)
@@ -56,7 +56,7 @@ curl -s -i http://localhost:5000/api/health -H "Origin: http://evil.example" | g
 
 ## 5. Análisis de riesgo residual
 
-- **H-06 (JWT en localStorage):** riesgo aceptado para el alcance académico; explotable solo si existe un XSS previo, vector reducido por el escape automático de React y las cabeceras de helmet. Plan: migrar a cookie `httpOnly` en una iteración futura.
+- **H-06 (JWT en sessionStorage):** riesgo reducido respecto a `localStorage`; sigue siendo explotable ante XSS previo, pero ahora el token desaparece al cerrar la pestaña del navegador. El vector se reduce con el escape automático de React y las cabeceras de helmet. Plan: migrar a cookie `httpOnly` + `SameSite=Strict` para una mitigación completa.
 - **H-07 (alertas):** el rate-limit contiene la fuerza bruta; el riesgo restante es la detección tardía. Plan: integrar alertas (correo/webhook) sobre el logger existente.
 
 ## 6. Trazabilidad

@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>35/35</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">83.33% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>5/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/1</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/35</span>
+                <span class='fraction'>35/35</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -98,76 +98,76 @@
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
 <a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { create } from 'zustand';</span></span></span>
-<span class="cstat-no" title="statement not covered" >import * as api from '../api/portalApi';</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >export const usePortalStore = create((set, get) =&gt; ({</span>
-<span class="cstat-no" title="statement not covered" >  student:          null,</span>
-<span class="cstat-no" title="statement not covered" >  enrolledCourses:  [],</span>
-<span class="cstat-no" title="statement not covered" >  availableCourses: [],</span>
-<span class="cstat-no" title="statement not covered" >  personalGrid:     {},</span>
-<span class="cstat-no" title="statement not covered" >  hasSchedule:      false,</span>
-<span class="cstat-no" title="statement not covered" >  totalBlocks:      0,</span>
-<span class="cstat-no" title="statement not covered" >  loading:          false,</span>
-<span class="cstat-no" title="statement not covered" >  error:            null,</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  fetch: async () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    // Limpiar estado anterior para evitar mostrar datos de otra sesión</span>
-<span class="cstat-no" title="statement not covered" >    set({</span>
-<span class="cstat-no" title="statement not covered" >      loading: true, error: null,</span>
-<span class="cstat-no" title="statement not covered" >      student: null, teacher: null,</span>
-<span class="cstat-no" title="statement not covered" >      enrolledCourses: [], availableCourses: [],</span>
-<span class="cstat-no" title="statement not covered" >      personalGrid: {}, hasSchedule: false, totalBlocks: 0,</span>
-<span class="cstat-no" title="statement not covered" >      courses: [], sessionList: [],</span>
-<span class="cstat-no" title="statement not covered" >    });</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-<span class="cstat-no" title="statement not covered" >      const res = await api.getPortalData();</span>
-<span class="cstat-no" title="statement not covered" >      set({ ...res.data, loading: false });</span>
-<span class="cstat-no" title="statement not covered" >    } catch (err) {</span>
-<span class="cstat-no" title="statement not covered" >      set({ error: err.response?.data?.message || err.message, loading: false });</span>
-<span class="cstat-no" title="statement not covered" >    }</span>
-<span class="cstat-no" title="statement not covered" >  },</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  enroll:       async (courseId) =&gt; { await api.enrollCourse(courseId);   await get().fetch(); },</span>
-<span class="cstat-no" title="statement not covered" >  unenroll:     async (courseId) =&gt; { await api.unenrollCourse(courseId); await get().fetch(); },</span>
-<span class="cstat-no" title="statement not covered" >  joinWaitlist: async (courseId) =&gt; { await api.joinWaitlist(courseId);   await get().fetch(); },</span>
-<span class="cstat-no" title="statement not covered" >  leaveWaitlist:async (courseId) =&gt; { await api.leaveWaitlist(courseId);  await get().fetch(); },</span>
-<span class="cstat-no" title="statement not covered" >}));</span>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { create } from 'zustand';
+import * as api from '../api/portalApi';
+&nbsp;
+export const usePortalStore = create((set, get) =&gt; ({
+  student:          null,
+  enrolledCourses:  [],
+  availableCourses: [],
+  personalGrid:     {},
+  hasSchedule:      false,
+  totalBlocks:      0,
+  loading:          false,
+  error:            null,
+&nbsp;
+  fetch: async () =&gt; {
+    // Limpiar estado anterior para evitar mostrar datos de otra sesión
+    set({
+      loading: true, error: null,
+      student: null, teacher: null,
+      enrolledCourses: [], availableCourses: [],
+      personalGrid: {}, hasSchedule: false, totalBlocks: 0,
+      courses: [], sessionList: [],
+    });
+    try {
+      const res = await api.getPortalData();
+      set({ ...res.data, loading: false });
+    } catch (err) {
+      set({ error: err.response<span class="branch-0 cbranch-no" title="branch not covered" >?.data?.message </span>|| err.message, loading: false });
+    }
+  },
+&nbsp;
+  enroll:       async (courseId) =&gt; { await api.enrollCourse(courseId);   await get().fetch(); },
+  unenroll:     <span class="fstat-no" title="function not covered" >async (courseId) =&gt; { await api.unenrollCourse(courseId); await get().fetch(); },</span>
+  joinWaitlist: <span class="fstat-no" title="function not covered" >async (courseId) =&gt; { await api.joinWaitlist(courseId);   await get().fetch(); },</span>
+  leaveWaitlist:<span class="fstat-no" title="function not covered" >async (courseId) =&gt; { await api.leaveWaitlist(courseId);  await get().fetch(); },</span>
+}));
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -175,7 +175,7 @@
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-12T03:46:21.705Z
+                at 2026-06-12T21:03:11.474Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

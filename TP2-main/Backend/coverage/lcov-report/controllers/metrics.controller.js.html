@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/23</span>
+                <span class='fraction'>0/32</span>
             </div>
         
             
@@ -96,29 +96,29 @@
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -128,29 +128,29 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js"><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >import { Schedule }       from '../models/Schedule.js';</span></span></span>
-import { Course }         from '../models/Course.js';
-import { Classroom }      from '../models/Classroom.js';
-import { Student }        from '../models/Student.js';
-import { computeMetrics } from '../csp/metrics.js';
-import { logger }         from '../config/logger.js';
-&nbsp;
+<span class="cstat-no" title="statement not covered" >import { Course }         from '../models/Course.js';</span>
+<span class="cstat-no" title="statement not covered" >import { Classroom }      from '../models/Classroom.js';</span>
+<span class="cstat-no" title="statement not covered" >import { Student }        from '../models/Student.js';</span>
+<span class="cstat-no" title="statement not covered" >import { computeMetrics } from '../csp/metrics.js';</span>
+<span class="cstat-no" title="statement not covered" >import { logger }         from '../config/logger.js';</span>
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >export const getMetrics = async (req, res) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >  try {</span>
 <span class="cstat-no" title="statement not covered" >    const schedule = await Schedule.findOne({ isActive: true }).lean();</span>
 <span class="cstat-no" title="statement not covered" >    if (!schedule) {</span>
 <span class="cstat-no" title="statement not covered" >      return res.status(404).json({ message: 'No hay horario activo' });</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const [courses, classrooms, students] = await Promise.all([</span>
 <span class="cstat-no" title="statement not covered" >      Course.find().populate('teacher', 'availability name'),</span>
 <span class="cstat-no" title="statement not covered" >      Classroom.find(),</span>
 <span class="cstat-no" title="statement not covered" >      Student.find().select('courses section'),</span>
 <span class="cstat-no" title="statement not covered" >    ]);</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const solution = schedule.solution instanceof Map</span>
 <span class="cstat-no" title="statement not covered" >      ? Object.fromEntries(schedule.solution)</span>
 <span class="cstat-no" title="statement not covered" >      : schedule.solution;</span>
-&nbsp;
+<span class="cstat-no" title="statement not covered" ></span>
 <span class="cstat-no" title="statement not covered" >    const metrics = computeMetrics({ solution, courses, classrooms, students });</span>
 <span class="cstat-no" title="statement not covered" >    logger.info('metrics_computed', { scheduleId: schedule._id, coveragePct: metrics.coveragePct });</span>
 <span class="cstat-no" title="statement not covered" >    res.json({ ...metrics, scheduleId: schedule._id, score: schedule.score });</span>
@@ -166,7 +166,7 @@ import { logger }         from '../config/logger.js';
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-12T03:44:22.009Z
+                at 2026-06-12T21:11:18.160Z
             </div>
         <script src="../prettify.js"></script>
         <script>
