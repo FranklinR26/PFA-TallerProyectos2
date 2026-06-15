@@ -27,7 +27,8 @@ Se realizaron **dos análisis consecutivos** con SonarQube Community v26.6.0 par
   - Fuentes: `Backend/` + `Frontend/src/`
   - Cobertura LCOV: `Backend/coverage/lcov.info` y `Frontend/coverage/lcov.info`
   - Exclusiones: `node_modules`, `coverage`, archivos de test, assets
-- CI pipeline configurado en `.github/workflows/ci.yml` (análisis automático habilitable vía `vars.SONAR_ENABLED`).
+- CI pipeline configurado en `.github/workflows/tests.yml` (jobs `backend-tests` y `frontend-tests` siempre activos; job `sonarqube` de análisis automático habilitable vía `vars.SONAR_ENABLED=true` más los secrets `SONAR_HOST_URL` y `SONAR_TOKEN`).
+- Alternativa en la nube: `.github/workflows/sonarcloud.yml` para análisis con **SonarCloud**, habilitable vía `vars.SONARCLOUD_ENABLED=true`, `vars.SONAR_ORGANIZATION` y el secret `SONAR_TOKEN`.
 
 ### 2.2 Procedimiento de análisis
 

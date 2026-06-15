@@ -56,3 +56,43 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+  sonarqube:
+    name: SonarQube analysis
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests]
+    # Solo se ejecuta si el repositorio tiene configurada la variable SONAR_ENABLED=true
+    # y los secrets SONAR_HOST_URL y SONAR_TOKEN (SonarQube/SonarCloud accesible desde el runner).
+    if: vars.SONAR_ENABLED == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # SonarQube necesita el historial completo para asignar issues a los autores.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate backend coverage
+        working-directory: TP2-main/Backend
+        run: |
+          npm ci
+          npm run test:coverage
+
+      - name: Generate frontend coverage
+        working-directory: TP2-main/Frontend
+        run: |
+          npm ci
+          npm run test:coverage
+
+      - name: SonarQube scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          projectBaseDir: TP2-main
+        env:
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

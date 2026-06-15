@@ -1,0 +1,49 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  sonarcloud:
+    name: SonarCloud analysis
+    runs-on: ubuntu-latest
+    # Opt-in: solo corre si el repo define vars.SONARCLOUD_ENABLED=true,
+    # vars.SONAR_ORGANIZATION (la organización de SonarCloud) y el secret SONAR_TOKEN.
+    if: vars.SONARCLOUD_ENABLED == 'true'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # SonarCloud necesita el historial completo para asignar issues y blame.
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Generate backend coverage
+        working-directory: TP2-main/Backend
+        run: |
+          npm ci
+          npm run test:coverage
+
+      - name: Generate frontend coverage
+        working-directory: TP2-main/Frontend
+        run: |
+          npm ci
+          npm run test:coverage
+
+      - name: SonarCloud scan
+        uses: SonarSource/sonarqube-scan-action@v4
+        with:
+          projectBaseDir: TP2-main
+          args: >
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
