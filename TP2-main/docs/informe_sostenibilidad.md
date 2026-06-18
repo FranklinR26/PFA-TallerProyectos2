@@ -288,6 +288,48 @@ El commit **`71a19b4`** concentra las optimizaciones principales de rendimiento 
 
 ---
 
+## 7. Evaluación integral de impactos (económico, social, ambiental, legal, de salud y seguridad)
+
+> Esta sección cubre el indicador **9.2 — Evaluación del impacto** de la rúbrica de competencias: *"Evalúa los posibles impactos económicos, sociales, ambientales, legales, de salud y seguridad que genera la solución de ingeniería, considerando además su contribución al desarrollo sostenible."*
+
+### 7.1 Impacto económico
+- **Costo del ciclo de vida.** El presupuesto del proyecto (≈ **USD 72,468** / 600 h, ver [PRESUPUESTO](Planificación/PRESUPUESTO.md) y [JUSTIFICACION_ANALISIS_CSP_COSTO](Planificación/JUSTIFICACION_ANALISIS_CSP_COSTO.md)) contempla desarrollo, despliegue y mantenimiento.
+- **Ahorro operativo.** La automatización del armado de horarios reduce ≈ **50%** el tiempo de planificación manual (RF/RNF del README), liberando horas-persona del personal de coordinación.
+- **Eficiencia de infraestructura.** Las optimizaciones de Green Software (−70% bytes, −94% queries, caché) reducen el consumo de cómputo y, por tanto, el **costo de hosting/energía** en operación continua.
+
+### 7.2 Impacto social
+- **Equidad de acceso.** Horarios sin conflictos y consultables por rol (docente/estudiante) mejoran la organización académica y reducen fricción administrativa.
+- **Inclusión.** Las correcciones **WCAG 2.1 AA** (contraste, teclado, foco visible, reflow, lectores de pantalla) amplían el acceso a personas con discapacidad visual o motriz.
+- **Carga administrativa.** El sistema descarga tareas repetitivas del personal, con una usabilidad validada (**SUS 79.0 — "Bueno"**).
+
+### 7.3 Impacto ambiental
+Desarrollado en detalle en las secciones 1–5: medición continua de huella de carbono (CO2.js), reducción de bytes/queries y eficiencia energética (Green Software). Contribución directa a un software de menor impacto ambiental.
+
+### 7.4 Impacto legal y normativo
+- **Protección de datos personales.** El sistema procesa datos de estudiantes y docentes (nombre, correo, código). Se alinea con la **Ley N.º 29733 — Ley de Protección de Datos Personales del Perú** (y su Reglamento DS 003-2013-JUS): contraseñas con `bcrypt` (cost 12), exclusión del hash en respuestas (`select:false` + `toJSON`), **minimización de datos** (`.select()`), control de acceso por roles (RBAC) y autenticación JWT. La auditoría **OWASP Top 10 2025** respalda estos controles.
+- **Accesibilidad como obligación.** El cumplimiento **WCAG** se alinea con la **Ley N.º 29973 — Ley General de la Persona con Discapacidad** (acceso a la información y servicios).
+- **Propiedad intelectual.** Distribución bajo licencia **MIT** declarada en el repositorio.
+
+### 7.5 Impacto en salud y bienestar
+- **Reducción de estrés laboral.** La automatización elimina el trabajo manual propenso a errores en la planificación de horarios.
+- **Ergonomía cognitiva y visual.** Contraste AA, jerarquía semántica y foco visible reducen la fatiga visual; la interfaz fue evaluada con SUS.
+- **Bienestar de docentes/estudiantes.** La restricción suave **SC-2 (minimizar huecos)** del solver CSP produce horarios más compactos, reduciendo tiempos muertos.
+
+### 7.6 Impacto en seguridad
+- **Seguridad de la información.** Mitigaciones OWASP aplicadas y verificadas (anti-inyección NoSQL, política de contraseñas, CORS restringido, manejo seguro de errores, rate-limiting `/api/auth`), respaldadas por pruebas automatizadas.
+- **Seguridad operativa.** Secreto `.env` removido del control de versiones; imagen Docker con usuario no-root y `.dockerignore`.
+- **Disponibilidad.** Objetivo de disponibilidad ≥ 99% (RNF-04) y caché que reduce carga ante picos.
+
+### 7.7 Contribución al desarrollo sostenible (ODS)
+| ODS | Contribución del proyecto |
+|-----|---------------------------|
+| **ODS 4 — Educación de calidad** | Mejora la organización académica y el acceso equitativo a horarios |
+| **ODS 9 — Industria, innovación e infraestructura** | Solución de ingeniería (solver CSP) con estándares internacionales |
+| **ODS 12 — Producción y consumo responsables** | Green Software: eficiencia de datos y cómputo |
+| **ODS 13 — Acción por el clima** | Medición y reducción de la huella de carbono del software |
+
+---
+
 ## Conclusión
-El trabajo prioriza optimizaciones con impacto directo en sostenibilidad: **menos bytes transferidos**, **menos operaciones en base de datos**, **menos CPU en servidor** y **menos JavaScript inicial en cliente**. Además, se mantiene trazabilidad con monitoreo (CO2.js) y evidencia de build (Vite chunks), permitiendo iterar con decisiones basadas en métricas.
+El trabajo prioriza optimizaciones con impacto directo en sostenibilidad: **menos bytes transferidos**, **menos operaciones en base de datos**, **menos CPU en servidor** y **menos JavaScript inicial en cliente**. Además, se evalúan de forma integral los impactos económico, social, ambiental, legal, de salud y seguridad (§7), y se mantiene trazabilidad con monitoreo (CO2.js) y evidencia de build (Vite chunks), permitiendo iterar con decisiones basadas en métricas.
 

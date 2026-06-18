@@ -83,9 +83,11 @@ Los 237 code smells con rating A significan que la deuda técnica representa < 5
 
 **Plan de reducción:** refactorización de estado con custom hooks en un sprint posterior.
 
-#### Cobertura (17.7 %)
+#### Cobertura (17.7 % → en mejora)
 
-La cobertura es baja porque la suite histórica cubría únicamente el módulo `csp/` (solver CSP, que supera el 90 % de cobertura). Al expandir la medición a todos los módulos (`controllers/`, `routes/`, `pages/`) se evidenció la brecha real. Los 92 tests existentes son válidos y pasan correctamente; el plan de mejora prioriza tests para `controllers/auth.controller.js`, `DataPage.jsx` y `SchedulePage.jsx`.
+La cobertura base era baja porque la suite histórica cubría principalmente el módulo `csp/` (solver CSP, > 90 %). Al expandir la medición a todos los módulos (`controllers/`, `routes/`, `pages/`) se evidenció la brecha real.
+
+**Acción correctiva aplicada:** se añadieron pruebas unitarias para `controllers/auth.controller.js` y `controllers/period.controller.js` (22 tests con modelos mockeados, sin dependencia de MongoDB), subiendo la cobertura de líneas del backend de **31.7 % → 36.2 %** y la cobertura de funciones de controladores a **68 %**. Las pruebas de autenticación además **verifican las mitigaciones OWASP** (inyección NoSQL, política de contraseñas, manejo seguro de errores). El plan continúa con `data.controller.js`, `schedule.controller.js` y los componentes `DataPage.jsx` / `SchedulePage.jsx` del frontend hasta acercarse a la meta del 70 %.
 
 ---
 
@@ -121,10 +123,10 @@ Checklist completo en [`WCAG_CHECKLIST.md`](WCAG_CHECKLIST.md). Resumen:
 | 1.3.1 — Estructura semántica (`<aside>`, `<main>`, `<nav>`) | ✅ Corregido |
 | 4.1.2 — Controles personalizados (`aria-pressed`, `role="group"`) | ✅ Corregido |
 | 1.1.1 — Iconos decorativos (`aria-hidden="true"`) | ✅ Corregido |
-| 2.4.7 — Foco visible | ⬜ Pendiente validación manual |
-| 1.4.10 — Reflow 320 px | ⬜ Pendiente (media queries) |
+| 2.4.7 — Foco visible (`:focus-visible` global) | ✅ Corregido |
+| 1.4.10 — Reflow 320 px (media query `≤600px`) | ✅ Corregido |
 
-**8 criterios corregidos con código verificable.** Los reportes automáticos de Lighthouse y axe DevTools están documentados en `docs/calidad/evidencias/WCAG_LIGHTHOUSE_MANUAL.md`.
+**10 criterios corregidos con código verificable.** Los reportes automáticos de Lighthouse y axe DevTools están documentados en `docs/calidad/evidencias/WCAG_LIGHTHOUSE_MANUAL.md`.
 
 ---
 
@@ -157,22 +159,24 @@ El puntaje **79.0** supera el umbral mínimo de la industria (68) y se ubica en 
 
 | Tipo | Herramienta | Ubicación | Resultado |
 |------|-------------|-----------|-----------|
-| Unitarias backend | Vitest | `Backend/__tests__/` (8 suites) | ✅ 92/92 pasan |
+| Unitarias backend | Vitest | `Backend/__tests__/` (10 suites) | ✅ 114/114 pasan |
 | Unitarias frontend | Vitest + Testing Library | `Frontend/src/__tests__/` | ✅ 7/7 pasan |
 | Integración frontend (API mock) | Vitest + MSW | `Frontend/src/__tests__/portal.integration.test.jsx` | ✅ pasan |
 | E2E funcional | Playwright | `Frontend/e2e/app.spec.ts` | ✅ configurado |
 | Aceptación | Cypress | `Frontend/cypress/e2e/login.cy.js` | ✅ configurado |
-| Cobertura | `@vitest/coverage-v8` (LCOV) | `npm run test:coverage` en ambas capas | ✅ 17.7 % |
+| Cobertura | `@vitest/coverage-v8` (LCOV) | `npm run test:coverage` en ambas capas | ✅ Backend 36.2 % |
 
 **Cobertura por capa:**
 
 | Capa | Tests | Resultado | Líneas | Funciones | Ramas |
 |------|-------|-----------|--------|-----------|-------|
-| Backend | 92 | ✅ 92/92 | 31.7 % | 29.4 % | 25.8 % |
+| Backend | 114 | ✅ 114/114 | **36.2 %** | **49.3 %** | **78.9 %** |
 | Frontend | 7 | ✅ 7/7 | 5.65 % | 4.2 % | 3.1 % |
-| **Global SonarQube** | **99** | **✅** | **17.7 %** | — | — |
+| **Global SonarQube** | **121** | **✅** | pendiente re-escaneo (↑ vs. 17.7 %) | — | — |
 
-> Durante esta auditoría se reparó la suite `sustainability.controller.test.js` (5 tests fallaban por nombres de archivo desactualizados tras migración GreenFrame→Carbometer).
+> **Mejora de cobertura en esta auditoría:** se añadieron 22 pruebas unitarias para `auth.controller.js` (12) y `period.controller.js` (10), elevando la cobertura de líneas del backend de **31.7 % → 36.2 %** y la de funciones de controladores a **68 %**. Las pruebas de `auth.controller.js` **validan automáticamente las mitigaciones OWASP** H-01 (no fuga de errores), H-03 (rechazo de inyección NoSQL) y H-04 (política de contraseñas), reforzando el indicador 12.2 *"verifica el cumplimiento de los requerimientos"*. La cobertura global de SonarQube se actualizará al re-ejecutar el escaneo.
+>
+> Durante esta auditoría también se reparó la suite `sustainability.controller.test.js` (5 tests fallaban por nombres de archivo desactualizados tras migración GreenFrame→Carbometer).
 
 ---
 

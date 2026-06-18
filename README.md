@@ -1,6 +1,6 @@
 # 📌 Sistema de Generación Óptima de Horarios Académicos (MERN Stack)
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](npm%20test) [![Coverage](https://img.shields.io/badge/coverage-87%25-green.svg)](#testing) [![Status](https://img.shields.io/badge/status-v1.0.0-blue.svg)](#)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)](npm%20test) [![Coverage](https://img.shields.io/badge/coverage-17.7%25-yellow.svg)](#testing) [![Status](https://img.shields.io/badge/status-v1.0.0-blue.svg)](#)
 
 ## 📑 Tabla de Contenidos
 - [Quick Start](#-quick-start) ⭐
@@ -30,10 +30,10 @@
 git clone https://github.com/FranklinR26/PFA-TallerProyectos2.git && cd PFA-TallerProyectos2/TP2-main
 
 # 2. Backend (Terminal 1)
-cd server && npm install && npm run dev
+cd Backend && npm install && npm run dev
 
 # 3. Frontend (Terminal 2)
-cd ../client && npm install && npm run dev
+cd ../Frontend && npm install && npm run dev
 
 # 4. Abrir en navegador
 http://localhost:5173
@@ -396,7 +396,7 @@ cd PFA-TallerProyectos2/TP2-main
 Crear el archivo `.env` dentro de `Backend/`:
  
 ```bash
-cp Backend/.env.example server/.env
+cp Backend/.env.example Backend/.env
 ```
  
 Editar `Backend/.env` con tus valores:
@@ -432,7 +432,7 @@ La aplicación estará disponible en: `http://localhost:5173`
 ## 5. Ejecutar los Tests
  
 ```bash
-cd server
+cd Backend
 npm test
 ```
  

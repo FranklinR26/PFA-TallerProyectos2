@@ -75,7 +75,10 @@ Ejecutada después de:
 
 ```bash
 # Verificar métricas via API (SonarQube debe estar corriendo)
-curl -u squ_326e2caf9f89a384a25a98a57553f7dba148686f: \
+# Generar un token en SonarQube → My Account → Security, y exportarlo como variable.
+# Nunca versionar el token en el repositorio.
+export SONAR_TOKEN="<TU_TOKEN>"
+curl -u "$SONAR_TOKEN:" \
   "http://localhost:9000/api/measures/component?component=PFA-TallerProyectos2&metricKeys=bugs,vulnerabilities,reliability_rating,security_rating,security_review_rating,coverage"
 ```
 

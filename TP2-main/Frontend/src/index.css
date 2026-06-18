@@ -72,6 +72,26 @@
 
 html { color-scheme: light; }
 
+/* WCAG 2.4.7 (Foco visible) — indicador de foco perceptible y consistente para
+   navegación por teclado en cualquier control (botones de rol, toggle de
+   contraseña, enlaces). Solo se muestra ante navegación por teclado. */
+:focus-visible {
+  outline: 2px solid var(--wf-blue);
+  outline-offset: 2px;
+  border-radius: var(--r-xs);
+}
+
+/* WCAG 1.4.10 (Reflow) — a ≤ 600px el login colapsa a una sola columna: se
+   oculta el panel informativo y el formulario ocupa el 100% del ancho, evitando
+   scroll horizontal a 320px. Refuerza los estilos inline de LoginPage. */
+@media (max-width: 600px) {
+  aside[aria-label="Panel informativo del sistema"] { display: none !important; }
+  aside[aria-label="Panel informativo del sistema"] + main {
+    width: 100% !important;
+    padding: 32px 16px !important;
+  }
+}
+
 body {
   font-family: var(--font);
   font-size: 14px;

@@ -16,8 +16,8 @@
 | 1.3.1 Estructura semántica | Landmarks y jerarquía de encabezados | ❌ Página de login compuesta solo por `div` | ✅ Corregido → `<aside>` panel informativo, `<main>` formulario; `<nav>` con `aria-label` en Navbar |
 | 4.1.2 Nombre, función, valor | Controles personalizados con estado expuesto | ❌ Tarjetas de rol sin estado seleccionado accesible | ✅ Corregido → `role="group"` + `aria-pressed` en cada tarjeta |
 | 1.1.1 Contenido no textual | Iconos decorativos ocultos a AT | ⚠️ SVGs decorativos expuestos | ✅ Corregido en login (`aria-hidden="true"`) |
-| 2.4.7 Foco visible | Indicador de foco perceptible | ⚠️ Depende de estilos globales del navegador | ⬜ Pendiente de validar manualmente con Tab en todas las páginas |
-| 1.4.10 Reflow / responsive | Usable a 320 px de ancho | ⚠️ Panel derecho de login con ancho fijo 480 px | ⬜ Pendiente (media queries) |
+| 2.4.7 Foco visible | Indicador de foco perceptible | ⚠️ Dependía de estilos del navegador | ✅ Corregido → regla global `:focus-visible` (outline 2px azul) en `Frontend/src/index.css` |
+| 1.4.10 Reflow / responsive | Usable a 320 px de ancho | ❌ Panel derecho de login con ancho fijo 480 px | ✅ Corregido → media query `≤600px` colapsa login a una columna en `index.css` (sin scroll horizontal a 320px) |
 | 2.4.2 Título de página | Título descriptivo | ✅ "HorarioConti — Universidad Continental" | ✅ Sin cambios |
 | 1.4.4 Redimensionado de texto | Zoom 200 % sin pérdida | ⚠️ No evaluado | ⬜ Pendiente de validación manual |
 

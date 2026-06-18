@@ -31,9 +31,18 @@ app.use(performanceMonitor);
 // Medición de huella de carbono (CO2.js) en TODAS las rutas.
 app.use(co2Monitor());
 
+// H-02 (A02 Security Misconfiguration) — lista blanca de orígenes.
+// En producción solo CLIENT_URL; en desarrollo solo los hosts locales del frontend.
+// Se evita reflejar cualquier Origin (cb(null, true)) que abría CORS por completo.
+const DEV_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173'];
 const corsOrigin = process.env.NODE_ENV === 'production'
   ? process.env.CLIENT_URL
-  : (origin, cb) => cb(null, true);
+  : (origin, cb) => {
+      // Permite herramientas sin Origin (curl, same-origin) y los hosts whitelisted.
+      if (!origin || DEV_ORIGINS.includes(origin)) return cb(null, true);
+      // Origen no autorizado: no se emite cabecera Access-Control-Allow-Origin.
+      return cb(null, false);
+    };
 
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json());
