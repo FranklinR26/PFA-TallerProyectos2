@@ -9,7 +9,7 @@
 | **Fase** | Control y Cierre |
 | **Fecha de cierre** | 2026-06-18 |
 | **Versión** | 2.0 (informe extendido con citas) |
-| **Elaborado por** | Equipo de Proyecto (ver §12) |
+| **Elaborado por** | Equipo de Proyecto |
 | **Marco de referencia** | PMBOK 7.ª ed. (PMI, 2021); PMBOK 6.ª ed., Grupo de Procesos de Cierre (PMI, 2017); Scrum (Schwaber & Sutherland, 2020) |
 
 > **Nota metodológica.** Las citas en el texto siguen el formato APA 7.ª edición; la lista completa de fuentes se encuentra en §14 (Referencias). Las referencias a artefactos internos del repositorio se enlazan directamente para garantizar la trazabilidad documental exigida por la fase de cierre (PMI, 2017).
