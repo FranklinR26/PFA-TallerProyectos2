@@ -41,7 +41,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const { data } = await loginRequest(email, password);
-      setAuth(data.token, data.user);
+      // H-06 MITIGACIÓN COMPLETA: El token ya está en una cookie httpOnly.
+      // Solo guardamos el usuario; el token se maneja automáticamente vía cookie.
+      setAuth(data.user);
       const role = ROLES.find(r => r.id === data.user.role);
       navigate(role?.redirect ?? '/portal');
     } catch (err) {

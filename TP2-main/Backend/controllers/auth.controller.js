@@ -24,8 +24,17 @@ export const login = async (req, res) => {
   }
 
   const token = signToken(user._id);
+  // H-06 (A04/A07 Cryptographic Failures) — MITIGACIÓN COMPLETA: Token en cookie httpOnly
+  // La cookie no es accesible a JavaScript (httpOnly=true), inmune a XSS.
+  // SameSite=Strict previene CSRF. Secure asegura transmisión HTTPS en producción.
+  res.cookie('auth_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000, // 24 horas
+    path: '/',
+  });
   res.json({
-    token,
     user: {
       id: user._id,
       code: user.code,
@@ -64,6 +73,15 @@ export const register = async (req, res) => {
       role,
       entityId: entityId || null,
       sectionId: sectionId || null,
+    });
+    const token = signToken(user._id);
+    // H-06 (A04/A07) — MITIGACIÓN COMPLETA: Token en cookie httpOnly.
+    res.cookie('auth_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000,
+      path: '/',
     });
     res.status(201).json({ user });
   } catch (err) {

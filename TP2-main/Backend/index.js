@@ -6,12 +6,14 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import { connectDB, clearEnvironmentalMetrics } from './config/db.js';
 import { logger }              from './config/logger.js';
 import { PERF }                from './config/performance.js';
 import { performanceMonitor }  from './middleware/performanceMonitor.js';
 import { co2Monitor }          from './middleware/co2Monitor.js';
 import { cacheMiddleware }     from './middleware/cache.js';
+import securityAlertMiddleware from './middleware/securityAlert.js';
 import authRoutes          from './routes/auth.routes.js';
 import dataRoutes          from './routes/data.routes.js';
 import scheduleRoutes      from './routes/schedule.routes.js';
@@ -27,6 +29,7 @@ const app = express();
 // Compresión gzip — reduce hasta un 70 % el tamaño de respuestas JSON/HTML
 app.use(compression({ level: 6, threshold: 1024 }));
 app.use(helmet());
+app.use(cookieParser()); // H-06: Parsear cookies para auth_token httpOnly
 app.use(performanceMonitor);
 // Medición de huella de carbono (CO2.js) en TODAS las rutas.
 app.use(co2Monitor());
@@ -46,6 +49,8 @@ const corsOrigin = process.env.NODE_ENV === 'production'
 
 app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(express.json());
+// H-07: Alertas de seguridad ante intentos de fuerza bruta (rate-limit).
+app.use(securityAlertMiddleware);
 
 // Assets estaticos con cache agresiva (archivos versionados/inmutables).
 // Reduce solicitudes HTTP repetidas: el navegador reutiliza la copia local

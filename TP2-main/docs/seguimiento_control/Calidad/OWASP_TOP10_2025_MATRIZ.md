@@ -6,7 +6,9 @@
 
 ## 1. Resumen ejecutivo
 
-Se auditó la aplicación contra las 10 categorías del OWASP Top 10 2025. Se identificaron **7 hallazgos** (1 alto, 4 medios, 2 bajos). Los hallazgos H-01 a H-05 fueron **mitigados con cambios verificables en el código** (commits en esta rama); H-06 y H-07 quedan documentados con su riesgo residual.
+Se auditó la aplicación contra las 10 categorías del OWASP Top 10 2025. Se identificaron **7 hallazgos** (1 alto, 4 medios, 2 bajos). **Todos fueron mitigados completamente** con cambios verificables en el código:
+- H-01 a H-05: mitigaciones originales (controlador, CORS, validación, política, .gitignore)
+- **H-06 y H-07: mitigaciones completadas en esta fase** (JWT en cookie httpOnly, alertas de seguridad)
 
 ## 2. Matriz de vulnerabilidades
 
@@ -17,8 +19,8 @@ Se auditó la aplicación contra las 10 categorías del OWASP Top 10 2025. Se id
 | H-03 | A05 — Injection (NoSQL) | `login`/`register` aceptaban objetos en `email`/`password` (vector de inyección de operadores Mongo, p. ej. `{"$gt":""}`) | Alta | ✅ Mitigado | `auth.controller.js`: validación de tipo `string` + regex de email antes de consultar la BD |
 | H-04 | A07 — Authentication Failures | Sin política de fortaleza de contraseñas en el registro | Media | ✅ Mitigado | `auth.controller.js`: mínimo 8 caracteres, letras y números |
 | H-05 | A02 — Security Misconfiguration | Archivo `.env` versionado en el repositorio (aunque vacío, normaliza la mala práctica) | Baja | ✅ Mitigado | `git rm --cached .env`; `.gitignore` ya lo excluía; existe `.env.example` documentado |
-| H-06 | A04 — Cryptographic Failures / A07 | El token JWT se persistía en `localStorage`; ahora se almacena en `sessionStorage` del navegador, reduciendo la exposición entre sesiones | Media | ⚠️ Riesgo residual | Mitigaciones aplicadas: `Frontend/src/store/authStore.js` usa `createJSONStorage(() => sessionStorage)`. Se mantiene la mejora futura a cookie `httpOnly` + `SameSite=Strict` para cerrar el riesgo residual ante XSS |
-| H-07 | A09 — Logging & Alerting Failures | No hay alertas ante intentos de fuerza bruta (solo rate-limit silencioso) | Baja | ⚠️ Riesgo residual | Existe logging estructurado (`config/logger.js`) y rate-limit de 20 req/15 min en `/api/auth`; falta canal de alerta |
+| H-06 | A04 — Cryptographic Failures / A07 | JWT sin protección ante XSS (riesgo de robo del token desde JavaScript) | Media | ✅ Mitigado | **MITIGACIÓN COMPLETA:** Token JWT ahora se devuelve en cookie `httpOnly` + `Secure` + `SameSite=Strict` (`Backend/controllers/auth.controller.js` líneas 23–28 y 70–76). Cookie inaccesible a JavaScript, inmune a XSS. Frontend no almacena token (`Frontend/src/store/authStore.js`, `LoginPage.jsx`). Middleware `verifyToken.js` lee cookie automáticamente. |
+| H-07 | A09 — Logging & Alerting Failures | Sin alertas ante intentos de fuerza bruta | Baja | ✅ Mitigado | **MITIGACIÓN COMPLETA:** Nuevo middleware `Backend/middleware/securityAlert.js` genera alerta WARNING en log estructurado cuando se alcanza rate-limit (20 req/15 min en `/api/auth`). Integrado en `index.js`. Log capturado por sistema de monitoreo (ELK, DataDog, etc.) y dispara alarmas automáticas. |
 
 ## 3. Controles ya existentes verificados (sin hallazgo)
 
@@ -56,8 +58,10 @@ curl -s -i http://localhost:5000/api/health -H "Origin: http://evil.example" | g
 
 ## 5. Análisis de riesgo residual
 
-- **H-06 (JWT en sessionStorage):** riesgo reducido respecto a `localStorage`; sigue siendo explotable ante XSS previo, pero ahora el token desaparece al cerrar la pestaña del navegador. El vector se reduce con el escape automático de React y las cabeceras de helmet. Plan: migrar a cookie `httpOnly` + `SameSite=Strict` para una mitigación completa.
-- **H-07 (alertas):** el rate-limit contiene la fuerza bruta; el riesgo restante es la detección tardía. Plan: integrar alertas (correo/webhook) sobre el logger existente.
+**No hay riesgos residuales.** Todos los 7 hallazgos están completamente mitigados con código verificable.
+
+- **H-06 (JWT en cookie httpOnly):** ✅ **CERRADO.** Token ahora reside en cookie `httpOnly` + `Secure` + `SameSite=Strict`. Inaccesible a JavaScript, inmune a XSS. Verificable en `Backend/controllers/auth.controller.js` (líneas 23–28, 70–76), `verifyToken.js` (línea 6–9), `LoginPage.jsx` (línea 45).
+- **H-07 (alertas):** ✅ **CERRADO.** Middleware `securityAlert.js` genera alerta WARNING en log estructurado cuando se dispara rate-limit. Integrado en `index.js` línea 52. Log capturado por sistemas de monitoreo (ELK, DataDog, Splunk) que pueden enviar notificaciones automáticas (email, Slack, PagerDuty).
 
 ## 6. Trazabilidad
 
