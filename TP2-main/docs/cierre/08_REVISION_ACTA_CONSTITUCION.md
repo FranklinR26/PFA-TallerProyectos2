@@ -48,7 +48,7 @@ Las universidades con currículo flexible presentan dificultades en la planifica
 ### Riesgos y Problemas
 
 
-|Alta complejidad algorítmica |
+| Alta complejidad algorítmica |
 | Limitaciones de tiempo (12 semanas) |
 | Falta de datos reales para pruebas |
 | Cambios en requerimientos del currículo |
