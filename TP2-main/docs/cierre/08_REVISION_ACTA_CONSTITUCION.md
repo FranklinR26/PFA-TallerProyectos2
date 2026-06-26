@@ -41,12 +41,17 @@ Las universidades con currículo flexible presentan dificultades en la planifica
 | Modelado del problema como CSP / optimización combinatoria | Integración con sistemas reales universitarios |
 | Registro de estudiantes, cursos y aulas | Infraestructura móvil nativa |
 | Generación automática de horarios (créditos y prerrequisitos) | Infraestructura productiva real |
-| Generación automática de horarios sin conflictos | Riesgos y Problemas |
-| Visualización de horarios | Alta complejidad algorítmica |
-| | Limitaciones de tiempo (12 semanas) |
-| | Falta de datos reales para pruebas |
-| | Cambios en requerimientos del currículo |
+| Generación automática de horarios sin conflictos |  |
+| Visualización de horarios |  |
 
+
+### Riesgos y Problemas
+|---|---|
+|Alta complejidad algorítmica |
+| Limitaciones de tiempo (12 semanas) |
+| Falta de datos reales para pruebas |
+| Cambios en requerimientos del currículo |
+ 
 ### Entregables Comprometidos
 
 1. Documento de análisis del problema
