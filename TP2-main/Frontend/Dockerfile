@@ -1,9 +1,16 @@
-FROM node:20-alpine
+# --- Etapa 1: Build ---
+FROM node:20-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 COPY . .
 RUN npm run build
-EXPOSE 5173
-# Sirve el build de producción en el puerto 5173 (coincide con .greenframe.yml).
-CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "5173"]
+
+# --- Etapa 2: Producción con nginx ---
+FROM nginx:stable-alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -qO- http://localhost/ || exit 1
+CMD ["nginx", "-g", "daemon off;"]

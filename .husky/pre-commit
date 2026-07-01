@@ -1,0 +1,1 @@
+cd TP2-main && npx lint-staged

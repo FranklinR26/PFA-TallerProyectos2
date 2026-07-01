@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Scripts de sostenibilidad para el proyecto MERN TP2.",
   "scripts": {
+    "prepare": "cd .. && husky",
     "sustainability:analyze": "npx --yes greenframe analyze --format=json > Backend/public/assets/greenframe-latest.json",
     "sustainability:analyze:text": "npx --yes greenframe analyze > Backend/public/assets/greenframe-latest.txt",
     "sustainability:analyze:legacy": "node scripts/sustainability-analysis.js",
@@ -14,10 +15,16 @@
     "lighthouse": "npx --yes lighthouse http://localhost:5173 --output=html --output=json --output-path=Backend/public/assets/lighthouse-report --chrome-flags=\"--headless=new\" --only-categories=performance,best-practices",
     "lighthouse:login": "npx --yes lighthouse http://localhost:5173/login --output=html --output-path=Backend/public/assets/lighthouse-login --chrome-flags=\"--headless=new\" --only-categories=performance"
   },
+  "lint-staged": {
+    "Frontend/src/**/*.{js,jsx}": [
+      "eslint --fix"
+    ]
+  },
   "devDependencies": {
     "@tgwf/co2": "^0.18.0",
-    "@greenframe/cli": "^3.4.0",
     "dotenv": "^17.4.2",
+    "husky": "^9.1.0",
+    "lint-staged": "^15.2.0",
     "playwright": "^1.48.0",
     "lighthouse": "^12.2.1"
   }
